@@ -1,7 +1,11 @@
 .idea
 node_modules
 DS_Store
+*.config.js
+/config/api.config.js
+/config/dev.js
+/config/test.js
+/db/dev
+/db/test
 *.env
 .eslintrc.js
-/db/test
-/db/dev

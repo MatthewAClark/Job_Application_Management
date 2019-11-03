@@ -1,8 +1,8 @@
 {
-  "name": "jobhuntapp",
+  "name": "job-application-management",
   "version": "1.0.0",
-  "description": "To help me look for jobs",
-  "main": "index.js",
+  "description": "To manage job applications",
+  "main": "server.js",
   "dependencies": {
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
@@ -23,10 +23,18 @@
     "mocha": "^6.2.2"
   },
   "scripts": {
-    "test": "psql -f ./db/test/seed.sql && mocha",
-    "dev": "psql -f ./db/dev/seed.sql && nodemon listen.js",
-    "prod": "psql -f ./db/prod/seed.sql"
+    "test": "mocha",
+    "start": "node server.js",
+    "dev": "psql -f ./db/dev/seed.sql && nodemon listen.js"
   },
-  "author": "Matthew Clark",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatthewAClark/Job_Application_Management.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatthewAClark/Job_Application_Management/issues"
+  },
+  "homepage": "https://github.com/MatthewAClark/Job_Application_Management#readme"
 }

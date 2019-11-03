@@ -1,10 +1,12 @@
+const advert = require('./db.advert');
+
 const express  = require('express');
 const router = express.Router();
-const { fetchAllJobs} = require('../controllers/jobsBoard');
-
-router.get('/', fetchAllJobs);
 
 
+router.use(express.static('public/api'));
 
+
+router.use('/application', advert);
 
 module.exports = router;
