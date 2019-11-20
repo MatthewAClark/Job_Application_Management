@@ -1,7 +1,30 @@
 const db = require('../config/index.js');
 
-const postNewJob = (organisation_id, advert_ref, contract_type, full_time, date_posted, date_applied, closing_date, date_seen, live, advert_url, min_salary, max_salary, job_title, job_description, job_location, job_field, agency) => db.one('INSERT INTO advert (organisation_id, advert_ref, contract_type, full_time, date_posted, date_applied, closing_date, date_seen, live, advert_url, min_salary, max_salary, job_title, job_description, job_location, job_field, agency) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *', [organisation_id, advert_ref, contract_type, full_time, date_posted, date_applied, closing_date, date_seen, live, advert_url, min_salary, max_salary, job_title, job_description, job_location, job_field, agency]);
+// advert_id SERIAL PRIMARY KEY,
+// position_id INT,
+// address_id INT,
+// contact_id INT,
+// advert_ref VARCHAR(10),
+// contract_type VARCHAR(10),
+// full_time BOOLEAN,
+// date_posted DATE,
+// date_applied DATE,
+// closing_date DATE,
+// date_seen TIMESTAMP,
+// live BOOLEAN,
+// advert_url VARCHAR(200),
+// min_salary VARCHAR(10),
+// max_salary VARCHAR(10),
+// advert_description VARCHAR(8000),
+// agency BOOLEAN,
+// job_board VARCHAR(20),
+// paid BOOLEAN,
 
-const getAllJobs = () => db.manyOrNone('SELECT * FROM advert');
+// Creating position first, then adding to advert table with that position
 
-module.exports = {postNewJob, getAllJobs};
+const postNewAdvert = (position_id, address_id, contact_id, advert_ref, contract_type, full_time, date_posted, date_applied, closing_date, live, advert_url, min_salary, max_salary, advert_description, agency, job_board, paid) => db.one('INSERT INTO advert (position_id, address_id, contact_id, advert_ref, contract_type, full_time, date_posted, date_applied, closing_date, live, advert_url, min_salary, max_salary, advert_description, agency, job_board, paid) VALUES ($1, $2) RETURNING *', [position_id, address_id, contact_id, advert_ref, contract_type, full_time, date_posted, date_applied, closing_date, live, advert_url, min_salary, max_salary, advert_description, agency, job_board, paid]);
+    
+        
+const getAllAdverts = () => db.manyOrNone('SELECT * FROM advert');
+
+module.exports = {postNewAdvert, getAllAdverts};

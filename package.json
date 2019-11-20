@@ -17,13 +17,14 @@
     "pg": "^7.12.1",
     "pg-promise": "^9.3.3",
     "pgpromise": "^0.1.1",
-    "promisify-node": "^0.5.0"
+    "promisify-node": "^0.5.0",
+    "supertest": "^3.1.0"
   },
   "devDependencies": {
     "mocha": "^6.2.2"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "psql -f ./db/test/seed.sql && mocha ./spec",
     "start": "node server.js",
     "dev": "psql -f ./db/dev/seed.sql && nodemon listen.js"
   },
