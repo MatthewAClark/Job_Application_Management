@@ -1,13 +1,13 @@
 const express  = require('express');
 const router = express.Router();
-const {addNewJob,  fetchAllJobs} = require('../controllers/db.advert');
+const {addNewAdvert,  fetchAllAdverts} = require('../controllers/db.advert');
 
- router.get('/', fetchAllJobs);
-
-
+ router.get('/', fetchAllAdverts);
 
 
-router.post('/', addNewJob);
+
+
+router.post('/', addNewAdvert);
 
 
 

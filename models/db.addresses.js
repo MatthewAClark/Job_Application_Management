@@ -11,7 +11,7 @@ const db = require('../config/index.js');
 // FOREIGN KEY (company_id) REFERENCES company(company_id)
 
 
-const postNewAddress = (company_id, line_1, line_2, town_city, county_state, country, postcode_zipcode) => db.one('INSERT INTO company (company_id, line_1, line_2, town_city, county_state, country, postcode_zipcode) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [company_id, line_1, line_2, town_city, county_state, country, postcode_zipcode]);  
+const postNewAddress = (company_id, line_1, line_2, town_city, county_state, country, postcode_zipcode) => db.one('INSERT INTO addresses (company_id, line_1, line_2, town_city, county_state, country, postcode_zipcode) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [company_id, line_1, line_2, town_city, county_state, country, postcode_zipcode]);  
         
 const getAllAddresses = () => db.manyOrNone('SELECT * FROM addresses');
 
