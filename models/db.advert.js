@@ -1,3 +1,4 @@
+
 const db = require('../config/index.js');
 
 // advert_id SERIAL PRIMARY KEY,

@@ -1,4 +1,6 @@
+
 const advert = require('./db.advert');
+
 const companies = require('./db.company');
 const addresses = require('./db.addresses');
 const positions = require('./db.positions');
@@ -6,6 +8,7 @@ const contacts = require('./db.contacts');
 const contracts = require('./db.jobContracts');
 const comments = require('./db.comments');
 const questions = require('./db.questions');
+const general = require('./db.general');
 
 const express  = require('express');
 const router = express.Router();
@@ -29,5 +32,7 @@ router.use('/contracts', contracts);
 router.use('/comments', comments);
 
 router.use('/questions', questions);
+
+router.use('/locationsandcompanies', general);
 
 module.exports = router;

@@ -1,4 +1,7 @@
+
 const {postNewAdvert, getAllAdverts} = require('../models/db.advert');
+
+const {postNewPosition} = require('../models/db.positions');
 
 // advert_id SERIAL PRIMARY KEY,
 //     position_id INT,
@@ -24,12 +27,23 @@ const {postNewAdvert, getAllAdverts} = require('../models/db.advert');
 //     FOREIGN KEY (address_id) REFERENCES addresses(address_id)
 
 function addNewAdvert(req, res, next) {
+
+  // Fetch todays date to datestamp entry into database
   var today = new Date();
-var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    postNewAdvert(req.body.position_id, req.body.address_id, req.body.contact_id, req.body.advert_ref, req.body.contract_type, req.body.full_time, req.body.date_posted, req.body.date_applied, req.body.closing_date, date, req.body.advert_url, req.body.min_salary, req.body.max_salary, req.body.advert_description, req.body.agency, req.body.job_board, req.body.paid)
-    .then(data =>  res.status(201).send(data))
-          .catch((error) => {console.log(error)
-            next({status: 400, error: error})});
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+  // Add new position into position table
+  postNewPosition(req.body.address_id, req.body.contact_id, req.body.job_title, req.body.occupation_sector)
+  .then(position => {
+
+    // Add the rest of the advert data to the advert table
+    return postNewAdvert(position.position_id, req.body.address_id, req.body.contact_id, req.body.advert_ref, req.body.contract_type, req.body.full_time, req.body.date_posted, req.body.date_applied, req.body.closing_date, date, req.body.advert_url, req.body.min_salary, req.body.max_salary, req.body.advert_description, req.body.agency, req.body.job_board, req.body.paid)
+    .then(advert => res.status(201).send({position, advert}))
+  
+  })
+  .catch((error) => {console.log(error)
+    return next({status: 400, error: error})});
+  
 }
 
 function fetchAllAdverts(req, res, next) {

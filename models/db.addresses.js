@@ -15,4 +15,8 @@ const postNewAddress = (company_id, line_1, line_2, town_city, county_state, cou
         
 const getAllAddresses = () => db.manyOrNone('SELECT * FROM addresses');
 
+
+
+
+
 module.exports = {postNewAddress, getAllAddresses};

@@ -5,6 +5,8 @@ const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../server');
 
+const addNewAdvert = require('../controllers/db.advert').addNewAdvert;
+
 
 
 // db API GET request endpoint test
@@ -148,13 +150,16 @@ describe('db api endpoints', () => {
           });
       });
   
+     
+
       it('POSTs an advert to the database', () => {
         // runs mock server
         return request(app)
           //get request to mock server
           .post('/api/adverts')
           .send({
-            position_id: 1,
+            job_title: 'Chartered Accountent',
+            occupation_sector: 'accounting',
             address_id: 1,
             advert_ref: 'XYZ189',
             contract_type: 'Temporary',
@@ -175,13 +180,15 @@ describe('db api endpoints', () => {
           .expect(201)
           .then(res => {
             // chai expect
+            console.log(res.body)
             expect(res.body).to.be.an('object');
-            expect(res.body.address_id).to.equal(1);
-            expect(res.body.advert_ref).to.equal('XYZ189');
+            expect(res.body.position.position_id).to.equal(3);
+            expect(res.body.position.job_title).to.equal('Chartered Accountent')
+            expect(res.body.advert.advert_ref).to.equal('XYZ189');
           // check date stamp
             var today = new Date();
             var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-             expect(res.body.date_seen).to.equal(date+'T00:00:00.000Z')
+             expect(res.body.advert.date_seen).to.equal(date+'T00:00:00.000Z')
         
           });
       });
