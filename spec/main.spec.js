@@ -1,9 +1,11 @@
 /* eslint-disable no-console*/
-
+console.log('here1')
 process.env.NODE_ENV = 'test';
 const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../server');
+
+console.log('here2')
 
 const addNewAdvert = require('../controllers/db.advert').addNewAdvert;
 

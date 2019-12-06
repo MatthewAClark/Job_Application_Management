@@ -11,4 +11,6 @@ const postNewCompany = (company_name, sector, industry, company_url) => db.one('
         
 const getAllCompanies = () => db.manyOrNone('SELECT * FROM company');
 
-module.exports = {postNewCompany, getAllCompanies};
+const getAllCompanyNames = () => db.manyOrNone('SELECT company_id, company_name FROM company')
+
+module.exports = {postNewCompany, getAllCompanies, getAllCompanyNames};
