@@ -1,4 +1,4 @@
-const {postNewContact, getAllContacts} = require('../models/db.contacts');
+const {postNewContact, getAllContacts, getContactsByAddressId} = require('../models/db.contacts');
 
 // contact_id SERIAL PRIMARY KEY,
 // address_id INT,
@@ -27,5 +27,11 @@ function fetchAllContacts(req, res, next) {
       .catch((error) => next({status: 404, error: error})) ;  
 }
 
-module.exports = { addNewContact, fetchAllContacts};
+function fetchContactsByAddressId(req, res, next) {
+    getContactsByAddressId(req.params.address_id)
+    .then(data => res.status(200).send(data))
+    .catch((error) => next({status: 404, error: error})) ;  
+}
+
+module.exports = { addNewContact, fetchAllContacts, fetchContactsByAddressId};
 

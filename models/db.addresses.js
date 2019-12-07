@@ -15,8 +15,8 @@ const postNewAddress = (company_id, line_1, line_2, town_city, county_state, cou
         
 const getAllAddresses = () => db.manyOrNone('SELECT * FROM addresses');
 
+const getAddressesWithCompanyNames = () => db.manyOrNone('SELECT company.company_name, addresses.address_id, addresses.line_1, addresses.line_2, addresses.town_city, addresses.county_state, addresses.country, addresses.postcode_zipcode FROM company FULL JOIN addresses ON company.company_id=addresses.company_id')
 
+const getAddressesByCompanyId = (company_id) => db.manyOrNone('SELECT * FROM addresses WHERE company_id = $1', [company_id])
 
-
-
-module.exports = {postNewAddress, getAllAddresses};
+module.exports = {postNewAddress, getAllAddresses, getAddressesWithCompanyNames, getAddressesByCompanyId};
