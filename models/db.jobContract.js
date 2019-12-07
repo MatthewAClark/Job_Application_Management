@@ -18,7 +18,7 @@ const db = require('../config/index.js');
 
 
 
-const postNewContract = (position_id, address_id, contact_id, begin_date, end_date, salary, job_description, responsibilities, notice_period, benifits, contract_type, full_time, paid) => db.one('INSERT INTO job_contracts (position_id, address_id, contact_id, begin_date, end_date, salary, live, job_description, responsibilities, notice_period, benifits, contract_type, full_time, paid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *', [position_id, address_id, contact_id, begin_date, end_date, salary, true, job_description, responsibilities, notice_period, benifits, contract_type, full_time, paid]);
+const postNewContract = (position_id, address_id, contact_id, begin_date, end_date, salary, live, job_description, responsibilities, notice_period, benifits, contract_type, full_time, paid) => db.one('INSERT INTO job_contracts (position_id, address_id, contact_id, begin_date, end_date, salary, live, job_description, responsibilities, notice_period, benifits, contract_type, full_time, paid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *', [position_id, address_id, contact_id, begin_date, end_date, salary, live, job_description, responsibilities, notice_period, benifits, contract_type, full_time, paid]);
     
         
 const getAllContracts = () => db.manyOrNone('SELECT * FROM job_contracts');
