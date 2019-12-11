@@ -1,7 +1,7 @@
-const {postNewAddress, getAllAddresses, getAddressesWithCompanyNames, getAddressesByCompanyId} = require('../models/db.addresses');
+const {postNewAddress, getAllAddresses, getAddressesWithEstablishmentNames, getAddressesByEstablishmentId} = require('../models/db.addresses');
 
 // address_id SERIAL PRIMARY KEY,
-// company_id INT,
+// establishment_id INT,
 // line_1 VARCHAR(30),
 // line_2 VARCHAR(30),
 // town_city VARCHAR(20),
@@ -11,7 +11,7 @@ const {postNewAddress, getAllAddresses, getAddressesWithCompanyNames, getAddress
 
 
 function addNewAddress(req, res, next) {
-    postNewAddress(req.body.company_id, req.body.line_1, req.body.line_2, req.body.town_city, req.body.county_state, req.body.country, req.body.postcode_zipcode)
+    postNewAddress(req.body.establishment_id, req.body.line_1, req.body.line_2, req.body.town_city, req.body.county_state, req.body.country, req.body.postcode_zipcode)
     .then(data =>  res.status(201).send(data))
           .catch((error) => {console.log(error)
             return next({status: 400, error: error})});
@@ -24,14 +24,14 @@ function addNewAddress(req, res, next) {
 // }
 
 function fetchAllAddresses(req, res, next) {
-  getAddressesWithCompanyNames()
+  getAddressesWithEstablishmentNames()
   .then(data => res.status(200).send(data))
     .catch((error) => next({status: 404, error: error})) ;  
 }
 
-function fetchByCompanyId(req, res, next) {
+function fetchByEstablishmentId(req, res, next) {
   
-    getAddressesByCompanyId(req.params.company_id)
+    getAddressesByEstablishmentId(req.params.establishment_id)
     .then(data => res.status(200).send(data))
       .catch((error) => next({status: 404, error: error})) ;  
  
@@ -39,5 +39,5 @@ function fetchByCompanyId(req, res, next) {
 
 
 
-module.exports = { addNewAddress, fetchAllAddresses, fetchByCompanyId};
+module.exports = { addNewAddress, fetchAllAddresses, fetchByEstablishmentId};
 

@@ -1,6 +1,6 @@
 const express  = require('express');
 const router = express.Router();
-const {addNewCompany,  fetchAllCompanies, fetchAllCompanyNames} = require('../controllers/db.company');
+const {addNewCompany,  fetchAllCompanies, fetchAllCompanyNames} = require('../controllers/db.companies');
 
  router.get('/', fetchAllCompanies);
 

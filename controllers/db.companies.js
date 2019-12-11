@@ -1,4 +1,4 @@
-const {postNewCompany, getAllCompanies, getAllCompanyNames} = require('../models/db.company');
+const {postNewCompany, getAllCompanies, getAllCompanyNames} = require('../models/db.companies');
 
 // company_id SERIAL PRIMARY KEY,
 // company_name VARCHAR(20),
@@ -14,6 +14,7 @@ function addNewCompany(req, res, next) {
 }
 
 function fetchAllCompanies(req, res, next) {
+  
     getAllCompanies()
     .then(data => res.status(200).send(data))
       .catch((error) => next({status: 404, error: error})) ;  

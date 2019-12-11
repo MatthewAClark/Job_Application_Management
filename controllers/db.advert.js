@@ -33,7 +33,7 @@ function addNewAdvert(req, res, next) {
   var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 
   // Add new position into position table
-  postNewPosition(req.body.address_id, req.body.contact_id, req.body.job_title, req.body.occupation_sector)
+  postNewPosition(req.body.address_id, req.body.contact_id, req.body.job_title, req.body.profession_id)
   .then(position => {
 
     // Add the rest of the advert data to the advert table

@@ -1,7 +1,7 @@
 
 const advert = require('./db.advert');
 
-const companies = require('./db.company');
+const companies = require('./db.companies');
 const addresses = require('./db.addresses');
 const positions = require('./db.positions');
 const contacts = require('./db.contacts');
@@ -33,6 +33,6 @@ router.use('/comments', comments);
 
 router.use('/questions', questions);
 
-router.use('/locationsandcompanies', general);
+// router.use('/locationsandestablishments', general);
 
 module.exports = router;

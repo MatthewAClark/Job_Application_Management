@@ -1,14 +1,237 @@
 /* eslint-disable no-console*/
-console.log('here1')
+
+// MVC test spec for Career Management Application
+
+// Set node environment for testing and load in necessary modules
 process.env.NODE_ENV = 'test';
 const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../server');
 
-console.log('here2')
+// Import models to test
+const {postNewCompany, getAllCompanies, getCompanyAddresses, getCompanyList} = require('../models/db.companies');
+const {postNewAddress, getAllAddresses} = require('../models/db.addresses');
+const {postNewContact, getAllContacts, getContactsByAddressId} = require('../models/db.contacts');
+const {postNewPersonal, getAllPersonals} = require('../models/db.personal');
+const {postNewSchool, getAllSchools} = require('../models/db.schools');
+
+// Test data
+const {get, post} = require('./test.data');
+
+// ************************** Models *******************************
+
+// companies table
+
+describe.only('All model components', () => {
+  describe.only('Gets all data from database', () => {
+    it('../models/companies, Fetches all companies from db', () => {
+      const data = get.companies
+      return getAllCompanies()
+        .then(result => {
+          expect(result).to.be.an('array');
+          expect(result.length).to.equal(2);
+          expect(result[0].company_name).to.equal(data[0].company_name);
+          expect(result[0].industry).to.equal(data[0].industry);
+        })
+    })
+
+    it('../models/companies, Fetches list of companies from db', () => {
+      const data = get.companies
+      return getCompanyList()
+        .then(result => {
+          expect(result).to.be.an('array');
+          expect(result.length).to.equal(2);
+          expect(result[0].company_name).to.equal(data[0].company_name);
+          expect(result[0].industry).to.equal(undefined);
+        })
+    })
+
+    it('../models/companies, Fetches company addresses from db', () => {
+      const data = get.addresses
+      return getCompanyAddresses(1)
+        .then(result => {
+          expect(result).to.be.an('array');
+          expect(result.length).to.equal(2);
+          expect(result[0].town_city).to.equal(data[0].town_city);
+        })
+    })
+
+    it('../models/contacts, Fetches all contacts from db', () => {
+      const data = get.contacts
+      return getAllContacts(1)
+        .then(result => {
+          expect(result).to.be.an('array');
+          expect(result.length).to.equal(2);
+          expect(result[0].contact_name).to.equal(data[0].contact_name);
+        })
+    })
+
+    it('../models/contacts, Fetches contacts by address db', () => {
+      const data = get.contacts
+      return getContactsByAddressId(1)
+        .then(result => {
+          expect(result).to.be.an('array');
+          expect(result.length).to.equal(1);
+          expect(result[0].contact_name).to.equal(data[0].contact_name);
+        })
+    })
+
+    
+  })
+
+  // Addresses
+
+  describe('../models/addresses', () => {
+    it('Fetches all addresses from db', () => {
+      const data = get.addresses
+      return getAllAddresses()
+        .then(result => {
+          expect(result).to.be.an('array');
+          expect(result.length).to.equal(3);
+          expect(result[0].town_city).to.equal(data.town_city);
+        })
+    })
+
+    it('Posts a new address to the db', () => {
+      const data = post.addresses
+      return postNewAddress(data.company_id, data.line_1, data.line_2, data.town_city, data.county_state, data.country, data.postcode_zipcode)
+        .then(result => {
+          //expect(result).to.be.an('array');
+          //expect(result.length).to.equal(2);
+          expect(result.company_id).to.equal(data.company_id)
+          expect(result.company_name).to.equal(data.company_name);
+        })
+    })
+  })
+
+  describe('../models/contacts', () => {
+    it('Fetches all contacts from db', () => {
+      const data = get.contacts
+      return getAllContacts()
+        .then(result => {
+          expect(result).to.be.an('array');
+          expect(result.length).to.equal(2);
+          expect(result[0].contact_name).to.equal(data[0].contact_name);
+        })
+    })
+
+    it('Posts a new contact to the db', () => {
+      const data = post.contacts
+      return postNewContact(data.address_id,
+        data.contact_name,
+        data.contact_title,
+        data.contact_position,
+        data.tel_number1,
+        data.tel_number2,
+        data.fax,
+        data.email,
+        data.contact_url,
+        data.reference,
+        data.date_known,
+        data.live)
+        .then(result => {
+          //expect(result).to.be.an('array');
+          //expect(result.length).to.equal(2);
+          expect(result.contact_name).to.equal(data.contact_name)
+          expect(result.address_id).to.equal(data.address_id);
+        })
+    })
+  })
+
+  describe('../models/personal', () => {
+    it('Fetches all personal info from db', () => {
+      const data = get.personal
+      return getAllPersonals()
+        .then(result => {
+          expect(result).to.be.an('array');
+          expect(result.length).to.equal(1);
+          expect(result[0].personal_name).to.equal(data.personal_name);
+        })
+    })
+
+    it('Posts a new personal to the db', () => {
+      const data = post.personal
+      return postNewPersonal(data.user_id,
+        data.contact_id,
+        data.personal_name,
+        data.additional_info,
+        data.personal_profile,
+        data.hobbies_interests,
+        data.ni_number
+        )
+        .then(result => {
+          //expect(result).to.be.an('array');
+          //expect(result.length).to.equal(2);
+          expect(result.contact_name).to.equal(data.contact_name)
+          expect(result.address_id).to.equal(data.address_id);
+        })
+    })
+  })
+
+  describe('../models/schools', () => {
+    it('Fetches all schools from db', () => {
+      const data = get.schools
+      return getAllSchools()
+        .then(result => {
+          expect(result).to.be.an('array');
+          expect(result.length).to.equal(1);
+          expect(result[0].school_name).to.equal(data.school_name);
+        })
+    })
+
+    it('Posts a new school to the db', () => {
+      const data = post.school
+      return postNewPersonal(data.user_id,
+        data.contact_id,
+        data.personal_name,
+        data.additional_info,
+        data.personal_profile,
+        data.hobbies_interests,
+        data.ni_number
+        )
+        .then(result => {
+          //expect(result).to.be.an('array');
+          //expect(result.length).to.equal(2);
+          expect(result.contact_name).to.equal(data.contact_name)
+          expect(result.address_id).to.equal(data.address_id);
+        })
+    })
+  })
+})
+
+
+// // ***************************** Controllers ************************
+
+// cGet = {req: {body: get}}
+// describe('All controller components', () => {
+//   describe('../controllers/companies', () => {
+//     const {addNewCompany, fetchAllCompanyNames, fetchAllCompanies} = require('../controllers/db.companies')
+
+//     it('Fetches all companies from db', () => {
+//       console.log(fetchAllCompanies())
+//         .then(result => {
+//           expect(result).to.be.an('array');
+//           expect(result.length).to.equal(1);
+//           expect(result[0].company_name).to.equal(cGet.company_name);
+//         })
+//     })
+
+//     it('Posts a new company to the db', () => {
+//       const s = {company_name: 'Sainsburys', sector: 'food', industry: 'retail', company_url: 'www.sainsburys.com'}
+//       addNewCompany(s.company_name, s.sector, s.industry, s.company_url)
+//         .then(result => {
+//           expect(result).to.be.an('array');
+//           expect(result.length).to.equal(2);
+//           expect(result[1].company_name).to.equal(s.company_name);
+//         })
+//     })
+//   })
+// })
 
 const addNewAdvert = require('../controllers/db.advert').addNewAdvert;
 
+
+// Test the database 
 
 
 // db API GET request endpoint test
@@ -23,13 +246,14 @@ describe('db api endpoints', () => {
         .get('/api/companies')
         .expect(200)
         .then(res => {
+         
           expect(res.body).to.be.an('array')
-          expect(res.body.length).to.equal(1);
+          expect(res.body.length).to.equal(2);
           expect(res.body[0].company_name).to.equal('A Software Company');
         });
     });
 
-    it('POSTs a company to the database', () => {
+    it('POSTs an company to the database', () => {
       // runs mock server
       return request(app)
         //get request to mock server
@@ -65,6 +289,7 @@ describe('db api endpoints', () => {
         .get('/api/addresses')
         .expect(200)
         .then(res => {
+          console.log('address'+res.body)
           expect(res.body).to.be.an('array')
           expect(res.body.length).to.equal(1);
           expect(res.body[0].town_city).to.equal('Exeter');
