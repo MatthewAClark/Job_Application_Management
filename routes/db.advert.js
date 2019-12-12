@@ -3,11 +3,11 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {addNewAdvert,  fetchAllAdverts} = require('../controllers/db.advert');
+const {addNewAdvert,  fetchAllAdverts, fetchLiveAdverts} = require('../controllers/db.advert');
 
  router.get('/', fetchAllAdverts);
 
-
+ router.get('/live', fetchLiveAdverts);
 
 
 router.post('/', addNewAdvert);

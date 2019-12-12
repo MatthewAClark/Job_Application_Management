@@ -1,5 +1,5 @@
 
-const {postNewAdvert, getAllAdverts} = require('../models/db.adverts');
+const {postNewAdvert, getAllAdverts, getLiveAdverts} = require('../models/db.adverts');
 
 
 
@@ -24,5 +24,11 @@ function fetchAllAdverts(req, res, next) {
       .catch((error) => next({status: 404, error: error})) ;  
 }
 
-module.exports = { addNewAdvert, fetchAllAdverts};
+function fetchLiveAdverts(req, res, next) {
+  getLiveAdverts()
+  .then(data => res.status(200).send(data))
+    .catch((error) => next({status: 404, error: error})) ;  
+}
+
+module.exports = { addNewAdvert, fetchAllAdverts, fetchLiveAdverts};
 

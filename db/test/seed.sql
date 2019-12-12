@@ -7,10 +7,10 @@ CREATE DATABASE career_management_test;
 CREATE TABLE adverts (
     advert_id SERIAL PRIMARY KEY,
     company_name VARCHAR(50),
-    job_title VARCHAR(30),
+    job_title VARCHAR(50),
     advert_ref VARCHAR(10),
     contract_type VARCHAR(20),
-    full_time BOOLEAN,
+    full_time_part_time VARCHAR(10),
     date_posted DATE,
     date_seen DATE,
     closing_date DATE,
@@ -26,8 +26,8 @@ CREATE TABLE adverts (
     
 );
 
-INSERT INTO adverts(company_name, job_title, advert_ref, contract_type, full_time, date_posted, date_seen, closing_date, live, website, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location)
-    VALUES('Talent Ticker','Software Engineer', 'abc123', 'Permanent', true, null, '2019-12-12', null, true, 'https://www.indeed.co.uk/jobs?q=software&l=cardiff&advn=998224676670214&vjk=e82b617fb725f81d', '£25,000', '£30,000', "Dupont Consulting is proud to be recruiting on behalf of our client, Talent Ticker for a Platform Engineer to join their Head Office in Cardiff.
+INSERT INTO adverts(company_name, job_title, advert_ref, contract_type, full_time_part_time, date_posted, date_seen, closing_date, live, website, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location)
+    VALUES('Talent Ticker','Software Engineer', 'abc123', 'Permanent', 'full-time', null, '2019-12-12', null, false, 'https://www.indeed.co.uk/jobs?q=software&l=cardiff&advn=998224676670214&vjk=e82b617fb725f81d', '£25,000', '£30,000', 'Dupont Consulting is proud to be recruiting on behalf of our client, Talent Ticker for a Platform Engineer to join their Head Office in Cardiff.
 
 Talent Ticker is the world’s first Predictive Talent Management Market Intelligence platform. Talent Ticker uses Artificial Intelligence including deep learning and natural language processing to deliver a SaaS based platform that provides market insights for staffing firms to improve efficiencies, outreach and increase sales.
 
@@ -95,26 +95,53 @@ You will be part of a forward-thinking team within one the fastest growing tech 
 
 Apart from being in this fast-paced environment some of the perks on offer are fantastic. You will have unlimited annual leave, daily coffee/tea, fresh fruit, healthy snacks, pension, flexible working hours and the chance to be awarded share options, not to mention a competitive basic salary.
 
-If you are interested in this exciting position, apply now for immediate consideration.
+', true, 'indeed.co.uk', false, 'Cardiff'),
+('Method4','Experienced Full-Stack Developer','def456','Permanent','various',null,'2019-11-11',null,true,'https://www.indeed.co.uk/jobs?q=software&l=cardiff&advn=8174038496306901&vjk=985e024e4e3857c5','£30,000','£45,000','At Method4 we’re development people, we build brilliant and complex software solutions and make it look super easy. We have opportunities available for experienced full-stack developers to join our Agile development teams, working on software development projects for a wide variety of clients.
 
-Job Types: Full-time, Permanent
+We’re based in a great location in the centre of Cardiff, a short walk from Cardiff Central Station. We know to create the best technology we need the best people, so we make a real effort to make Method4 not only a great place to work but a place where our people can do amazing things.
 
-Salary: £25,000.00 to £30,000.00 /year
+You’ll be involved with a wide range of technologies, developing digital platforms and cloud applications. If you’re keen to develop your career using the latest development tools and techniques you’ll benefit from the support of knowledgeable and friendly colleagues in a superb working environment, as well as access to training materials from Pluralsight and Microsoft Azure credits to experiment with the latest cloud technology.
 
-Experience:
+Responsibilities:
 
-TDD: 1 year (Preferred)
-No Sql: 1 year (Preferred)
-BDD: 1 year (Preferred)
-Agile: 1 year (Preferred)
-Sql: 1 year (Preferred)
-Python: 1 year (Preferred)
-Education:
+Working closely with clients to develop complete software solutions to a high standard;
+Involvement in the full project lifecycle, from requirements gathering and software design to release, end-to-end testing and system support;
+Taking a leading role within one of our agile development teams working on multiple projects with varying deadlines;
+Influencing architectural decisions, using the best and most suitable technologies available
+We’re looking for:
 
-Bachelor's (Required)
-Location: 
+An enthusiastic approach to work;
+Excellent communication/interpersonal skills;
+Pride in a job well done;
+An eye for detail;
+A keen interest in technology.
+Essential skills:
 
-Cardiff, Cardiff \(Required)
+Full stack development experience in Microsoft technologies;
+Experience in analysis of system requirements;
+Building complex .NET, MVC web applications;
+Database development (including SQL);
+Experience using Git;
+JavaScript, CSS;
+Development of software testing strategies.
+Desirable but not essential skills:
+
+Microsoft Azure development and deployment;
+Agile development (for example SCRUM);
+Experience of one or more modern front-end frameworks / libraries;
+User Experience (UX) design;
+Experience using Azure DevOps;
+System architecture design.
+Benefits: Pension scheme; 25 days holiday per annum (plus bank holidays) increasing by one day for every completed year up to 35 days; Pluralsight subscription; Visual studio enterprise subscription; bonus scheme; cycle to work scheme; charity and social events throughout the year; free freshly ground coffee and fruit.
+
+Hours: Full (37.5 hours with flexible start and finish times each day) and part-time positions available, please state your preference on your application.
+
+Job Types: Full-time, Part-time, Permanent
+
+Salary: £30,000.00 to £45,000.00 /year
+
 Flexible Working Options Available:
 
-Flexitime", true, 'indeed.co.uk', false, 'Cardiff');
+Flexitime
+Part-time',false,'indeed.co.uk',false,'Cardiff');
+
