@@ -1,6 +1,7 @@
 /* eslint-disable no-console*/
 
 // MVC test spec for Career Management Application
+// This file tests each component developed during this project for TDD
 
 // Set node environment for testing and load in necessary modules
 process.env.NODE_ENV = 'test';
@@ -8,23 +9,21 @@ const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../server');
 
-
-
-// ************************** Models *******************************
-
-// companies table
+// Import required model components
+const adverts = require('../models/adverts');
 
 describe('All model components', () => {
-  describe('Gets all data from database', () => {
-    it('../models/professions, Fetches all professions', () => {
-      const data = get.professions
+// ************************** Models *******************************
 
-      return getAllProfessions()
+describe('Test getting data from database', () => {
+
+  // adverts table
+    it('../models/adverts, Fetches all adverts', () => {
+      return getAllAdverts()
         .then(result => {
-
           expect(result).to.be.an('array');
           expect(result.length).to.equal(1);
-          expect(result[0].profession).to.equal(data.profession);
+          expect(result[0].advert_ref).to.equal('abc123');
         })
     })
 

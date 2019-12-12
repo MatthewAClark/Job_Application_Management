@@ -6,6 +6,5 @@ DS_Store
 /config/dev.js
 /config/test.js
 /db/dev
-/db/test
 *.env
 .eslintrc.js
