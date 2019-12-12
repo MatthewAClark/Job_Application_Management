@@ -3,7 +3,7 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {addNewAdvert,  fetchAllAdverts, fetchLiveAdverts} = require('../controllers/db.advert');
+const {addNewAdvert,  fetchAllAdverts, fetchLiveAdverts} = require('../controllers/db.adverts');
 
  router.get('/', fetchAllAdverts);
 

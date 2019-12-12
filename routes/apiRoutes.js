@@ -1,5 +1,5 @@
 
-const advert = require('./db.advert');
+const adverts = require('./db.adverts');
 
 
 const express  = require('express');
@@ -9,7 +9,7 @@ const router = express.Router();
 router.use(express.static('public/api'));
 
 
-router.use('/adverts', advert);
+router.use('/adverts', adverts);
 
 // router.use('/companies', companies);
 

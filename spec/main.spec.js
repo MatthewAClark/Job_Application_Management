@@ -10,11 +10,11 @@ const request = require('supertest');
 const app = require('../server');
 
 // Import required model components
-const { getAllAdverts, getLiveAdverts } = require('../models/db.adverts');
+const { getAllAdverts, getLiveAdverts, postNewAdvert } = require('../models/db.adverts');
 
-describe.only('Adverts', () => {
+describe('Adverts', () => {
 
-  describe.only('Model testing', () => {
+  describe('Model testing', () => {
 
     // adverts table
     it('../models/adverts, Fetches all adverts', () => {
@@ -32,6 +32,14 @@ describe.only('Adverts', () => {
           expect(result).to.be.an('array');
           expect(result.length).to.equal(1);
           expect(result[0].advert_ref).to.equal('def456');
+        })
+    })
+
+    it('../models/adverts, Posts an advert', () => {
+      return postNewAdvert('Test Company Ltd', 'Test job', 'test123', '', '', null, null, null, '', '', '', 'This is a test', true, 'test', false, 'test location')
+        .then(result => {
+          expect(result).to.be.an('Object');
+          expect(result.advert_ref).to.equal('test123');
         })
     })
 
@@ -54,7 +62,7 @@ describe.only('Adverts', () => {
 
     });
 
-    it.only('../api/adverts, Fetches all adverts', () => {
+    it('../api/adverts, Fetches live adverts', () => {
 
       return request(app) // run mock server
         .get('/api/adverts/live')
@@ -68,7 +76,38 @@ describe.only('Adverts', () => {
 
     });
 
+    it('../api/adverts, Posts an advert to the db', () => {
+
+      // runs mock server
+      return request(app)
+        //get request to mock server
+        .post('/api/adverts/')
+        .send({
+          company_name: 'Test Company Ltd',
+          job_title: 'Test job',
+          advert_ref: 'test123',
+          contract_type: '',
+          full_time_part_time: '',
+          date_posted: null,
+          closing_date: null,
+          website: '',
+          min_salary: '',
+          max_salary: '',
+          advert_description: 'This is a test',
+          agency: true,
+          job_board: 'test',
+          voluntary: false,
+          job_location: 'test location'
+        })
+        // supertest expect  - key on promise object
+        .expect(201)
+        .then(res => {
+          expect(res.body).to.be.an('Object');
+          expect(res.body.advert_ref).to.equal('test123')
+        })
+    })
   })
+
 });
 
 //   /// Post to the database
