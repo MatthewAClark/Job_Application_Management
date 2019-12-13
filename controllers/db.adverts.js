@@ -1,5 +1,5 @@
 
-const { postNewAdvert, getAllAdverts, getLiveAdverts } = require('../models/db.adverts');
+const { postNewAdvert, getAllAdverts, getLiveAdverts, getAdvertById, putAdvertById} = require('../models/db.adverts');
 
 
 
@@ -18,6 +18,15 @@ function addNewAdvert(req, res, next) {
     });
 }
 
+function updateAdvertById(req, res, next) {
+  putAdvertById(req.params.advert_id, req.body.company_name, req.body.job_title, req.body.advert_ref, req.body.contract_type, req.body.full_time_part_time, req.body.date_posted, req.body.closing_date, req.body.live, req.body.website, req.body.min_salary, req.body.max_salary, req.body.advert_description, req.body.agency, req.body.job_board, req.body.voluntary, req.body.job_location)
+    .then(data => {
+      res.status(200).send(data)})
+    .catch((error) => {
+      console.log(error)
+      next({ status: 400, error: error })});
+}
+
 function fetchAllAdverts(req, res, next) {
   getAllAdverts()
     .then(data => res.status(200).send(data))
@@ -30,5 +39,11 @@ function fetchLiveAdverts(req, res, next) {
     .catch((error) => next({ status: 404, error: error }));
 }
 
-module.exports = { addNewAdvert, fetchAllAdverts, fetchLiveAdverts };
+function fetchAdvertById(req, res, next) {
+  getAdvertById(req.params.advert_id)
+    .then(data => res.status(200).send(data))
+    .catch((error) => next({status: 404, error: error}))
+}
+ 
+module.exports = { addNewAdvert, fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById};
 

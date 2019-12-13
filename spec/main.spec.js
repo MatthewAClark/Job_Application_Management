@@ -10,7 +10,7 @@ const request = require('supertest');
 const app = require('../server');
 
 // Import required model components
-const { getAllAdverts, getLiveAdverts, postNewAdvert } = require('../models/db.adverts');
+const { getAllAdverts, getLiveAdverts, postNewAdvert, getAdvertById, putAdvertById } = require('../models/db.adverts');
 
 describe('Adverts', () => {
 
@@ -40,6 +40,22 @@ describe('Adverts', () => {
         .then(result => {
           expect(result).to.be.an('Object');
           expect(result.advert_ref).to.equal('test123');
+        })
+    })
+
+    it('../models/adverts, Updates an advert', () => {
+      return putAdvertById(1,'Another test company', 'Test job 2', 'test456', '', '', null, null, false, '', '', '', 'This is another test', true, 'test', false, 'test location 2')
+        .then(result => {
+          expect(result).to.be.an('Object');
+          expect(result.advert_ref).to.equal('test456');
+        })
+    })
+
+    it('../models/adverts, Get an advert by Id', () => {
+      return getAdvertById(2)
+        .then(result => {
+          expect(result).to.be.an('Object');
+          expect(result.advert_ref).to.equal('def456');
         })
     })
 
@@ -76,6 +92,19 @@ describe('Adverts', () => {
 
     });
 
+    it('../api/adverts/:id, Fetches advert by id', () => {
+
+      return request(app) // run mock server
+        .get('/api/adverts/2')
+        .expect(200)
+        .then(res => {
+
+          expect(res.body).to.be.an('object')
+          expect(res.body.advert_ref).to.equal('def456');
+        });
+
+    });
+
     it('../api/adverts, Posts an advert to the db', () => {
 
       // runs mock server
@@ -106,6 +135,40 @@ describe('Adverts', () => {
           expect(res.body.advert_ref).to.equal('test123')
         })
     })
+
+    it('../api/adverts, Updates an advert to the db', () => {
+
+      // runs mock server
+      return request(app)
+        //get request to mock server
+        .put('/api/adverts/1')
+        .send({
+          company_name: 'Test Company Ltd',
+          job_title: 'Test job',
+          advert_ref: 'test789',
+          contract_type: '',
+          full_time_part_time: '',
+          date_posted: null,
+          closing_date: null,
+          live: false,
+          website: '',
+          min_salary: '',
+          max_salary: '',
+          advert_description: 'This is a test 2',
+          agency: true,
+          job_board: 'test',
+          voluntary: false,
+          job_location: 'test location'
+        })
+        // supertest expect  - key on promise object
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.be.an('Object');
+          expect(res.body.advert_id).to.equal(1)
+          expect(res.body.advert_ref).to.equal('test789')
+        })
+    })
+
   })
 
 });
