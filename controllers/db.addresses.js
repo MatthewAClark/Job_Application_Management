@@ -1,5 +1,5 @@
 
-const { getAddressesByCompanyId, postNewAddress, postNewCompanyAddress } = require('../models/db.addresses');
+const {getAllAddresses, getAddressesByCompanyId, postNewAddress, postNewCompanyAddress } = require('../models/db.addresses');
 
 
 
@@ -26,5 +26,11 @@ function fetchAddressesByCompanyId(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = { addNewCompanyAddress, fetchAddressesByCompanyId };
+function fetchAllAddresses(req, res, next) {
+  getAllAddresses()
+    .then(data => res.status(200).send(data))
+    .catch((error) => next({ status: 404, error: error }))
+}
+
+module.exports = {fetchAllAddresses, addNewCompanyAddress, fetchAddressesByCompanyId };
 
