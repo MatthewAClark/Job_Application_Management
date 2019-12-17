@@ -5,7 +5,7 @@ const db = require('../config/index.js');
 
 const postNewAddress = (company_id, address_field, postcode) => db.one('INSERT INTO addresses (company_id, address_field, postcode) VALUES ($1, $2, $3) RETURNING *', [company_id, address_field, postcode]);
 
-const getAddressesByCompanyId = (company_id) => db.manyOrNone('SELECT * FROM addresses INNER JOIN company_addresses ON addresses.address_id=company_addresses.address_id WHERE company_id=$1', [company_id]);
+const getAddressesByCompanyId = (company_id) => db.manyOrNone('SELECT * FROM addresses WHERE company_id=$1', [company_id]);
 
 
 
