@@ -2,6 +2,7 @@
 const adverts = require('./db.adverts');
 const companies = require('./db.companies');
 const addresses = require('./db.addresses');
+const contacts = require('./db.contacts')
 
 const express  = require('express');
 const router = express.Router();
@@ -20,7 +21,7 @@ router.use('/adverts', adverts);
 
 // router.use('/professions', professions)
 
-// router.use('/contacts', contacts);
+router.use('/contacts', contacts);
 
 // router.use('/contracts', contracts);
 
