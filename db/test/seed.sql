@@ -3,10 +3,38 @@ CREATE DATABASE career_management_test;
 
 \c career_management_test;
 
+CREATE TABLE companies (
+    company_id SERIAL PRIMARY KEY,
+    company_name VARCHAR(30)   
+);
+
+CREATE TABLE addresses (
+    address_id SERIAL PRIMARY KEY,
+    address_field VARCHAR(100),
+    postcode VARCHAR(8)
+);
+
+CREATE TABLE contacts (
+    contact_id SERIAL PRIMARY KEY,
+    company_id INT,
+    address_id INT,
+    contact_name VARCHAR(30),
+    FOREIGN KEY (company_id) REFERENCES companies(company_id),
+    FOREIGN KEY (address_id) REFERENCES addresses(address_id)
+);
+
+CREATE TABLE contact_values (
+    contact_id INT,
+    contact_type VARCHAR(10),
+    contact_value VARCHAR(50),
+    FOREIGN KEY (contact_id) REFERENCES contacts(contact_id)
+);
 
 CREATE TABLE adverts (
     advert_id SERIAL PRIMARY KEY,
-    company_name VARCHAR(50),
+    company_id INT,
+    contact_id INT,
+    address_id INT,
     job_title VARCHAR(50),
     advert_ref VARCHAR(10),
     contract_type VARCHAR(20),
@@ -22,12 +50,52 @@ CREATE TABLE adverts (
     agency BOOLEAN,
     job_board VARCHAR(50),
     voluntary BOOLEAN,
-    job_location VARCHAR(20)
-    
+    job_location VARCHAR(20),
+    applied BOOLEAN,
+    FOREIGN KEY (company_id) REFERENCES companies(company_id),
+    FOREIGN KEY (contact_id) REFERENCES contacts(contact_id),
+    FOREIGN KEY (address_id) REFERENCES addresses(address_id)   
 );
 
-INSERT INTO adverts(company_name, job_title, advert_ref, contract_type, full_time_part_time, date_posted, date_seen, closing_date, live, website, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location)
-    VALUES('Talent Ticker','Software Engineer', 'abc123', 'Permanent', 'full-time', null, '2019-12-12', null, false, 'https://www.indeed.co.uk/jobs?q=software&l=cardiff&advn=998224676670214&vjk=e82b617fb725f81d', '£25,000', '£30,000', 'Dupont Consulting is proud to be recruiting on behalf of our client, Talent Ticker for a Platform Engineer to join their Head Office in Cardiff.
+CREATE TABLE professions (
+    profession_id SERIAL PRIMARY KEY,
+    profession_name VARCHAR(30),
+    profession_summary VARCHAR(500)
+)
+
+CREATE TABLE cvs (
+    cv_id SERIAL PRIMARY KEY
+);
+
+CREATE TABLE applications (
+    application_id SERIAL PRIMARY KEY,
+    company_id INT,
+    advert_id INT,
+    profession_id INT,
+    cv_id INT,
+    cover_letter VARCHAR(5000),
+    date_applied DATE,
+    pending BOOLEAN,
+    FOREIGN KEY (advert_id) REFERENCES adverts(advert_id),
+    FOREIGN KEY (profession_id) REFERENCES professions(profession_id),
+    FOREIGN KEY (cv_id) REFERENCES cvs(cv_id),
+    FOREIGN KEY (company_id) REFERENCES companies(company_id)
+);
+
+CREATE TABLE application_contacts (
+    contact_id INT,
+    application_id INT,
+    position VARCHAR(20),
+    comments VARCHAR(100),
+    FOREIGN KEY (contact_id) REFERENCES contacts(contact_id),
+    FOREIGN KEY (application_id) REFERENCES applications(application_id),
+);
+
+INSERT INTO companies(company_name)
+VALUES('Talent Ticker');
+
+INSERT INTO adverts(company_id, contact_id, job_title, advert_ref, contract_type, full_time_part_time, date_posted, date_seen, closing_date, live, website, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location, applied)
+    VALUES(1, null, 'Software Engineer', 'abc123', 'Permanent', 'full-time', null, '2019-12-12', null, false, 'https://www.indeed.co.uk/jobs?q=software&l=cardiff&advn=998224676670214&vjk=e82b617fb725f81d', '£25,000', '£30,000', 'Dupont Consulting is proud to be recruiting on behalf of our client, Talent Ticker for a Platform Engineer to join their Head Office in Cardiff.
 
 Talent Ticker is the world’s first Predictive Talent Management Market Intelligence platform. Talent Ticker uses Artificial Intelligence including deep learning and natural language processing to deliver a SaaS based platform that provides market insights for staffing firms to improve efficiencies, outreach and increase sales.
 
@@ -143,5 +211,7 @@ Salary: £30,000.00 to £45,000.00 /year
 Flexible Working Options Available:
 
 Flexitime
-Part-time',false,'indeed.co.uk',false,'Cardiff');
+Part-time',false,'indeed.co.uk',false,'Cardiff', false);
 
+INSERT INTO applications(advert_id, cover_letter)
+VALUES(1, 'The quick brown fox jumps over the lazy dog');

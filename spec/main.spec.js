@@ -12,56 +12,68 @@ const app = require('../server');
 // Import required model components
 const { getAllAdverts, getLiveAdverts, postNewAdvert, getAdvertById, putAdvertById } = require('../models/db.adverts');
 
+const {getAllApplications} = require ('../models/db.applications');
+
 describe('Adverts', () => {
 
   describe('Model testing', () => {
+    describe('Adverts table', () => {
+      it('../models/adverts, Fetches all adverts', () => {
+        return getAllAdverts()
+          .then(result => {
+            expect(result).to.be.an('array');
+            expect(result.length).to.equal(2);
+            expect(result[0].advert_ref).to.equal('abc123');
+          })
+      })
 
-    // adverts table
-    it('../models/adverts, Fetches all adverts', () => {
-      return getAllAdverts()
-        .then(result => {
-          expect(result).to.be.an('array');
-          expect(result.length).to.equal(2);
-          expect(result[0].advert_ref).to.equal('abc123');
-        })
-    })
+      it('../models/adverts, Fetches live adverts only', () => {
+        return getLiveAdverts()
+          .then(result => {
+            expect(result).to.be.an('array');
+            expect(result.length).to.equal(1);
+            expect(result[0].advert_ref).to.equal('def456');
+          })
+      })
 
-    it('../models/adverts, Fetches live adverts only', () => {
-      return getLiveAdverts()
-        .then(result => {
-          expect(result).to.be.an('array');
-          expect(result.length).to.equal(1);
-          expect(result[0].advert_ref).to.equal('def456');
-        })
-    })
+      it('../models/adverts, Posts an advert', () => {
+        return postNewAdvert('Test Company Ltd', 'Test job', 'test123', '', '', null, null, null, '', '', '', 'This is a test', true, 'test', false, 'test location')
+          .then(result => {
+            expect(result).to.be.an('Object');
+            expect(result.advert_ref).to.equal('test123');
+          })
+      })
 
-    it('../models/adverts, Posts an advert', () => {
-      return postNewAdvert('Test Company Ltd', 'Test job', 'test123', '', '', null, null, null, '', '', '', 'This is a test', true, 'test', false, 'test location')
-        .then(result => {
-          expect(result).to.be.an('Object');
-          expect(result.advert_ref).to.equal('test123');
-        })
-    })
+      it('../models/adverts, Updates an advert', () => {
+        return putAdvertById(1, 'Another test company', 'Test job 2', 'test456', '', '', null, null, false, '', '', '', 'This is another test', true, 'test', false, 'test location 2')
+          .then(result => {
+            expect(result).to.be.an('Object');
+            expect(result.advert_ref).to.equal('test456');
+          })
+      })
 
-    it('../models/adverts, Updates an advert', () => {
-      return putAdvertById(1,'Another test company', 'Test job 2', 'test456', '', '', null, null, false, '', '', '', 'This is another test', true, 'test', false, 'test location 2')
-        .then(result => {
-          expect(result).to.be.an('Object');
-          expect(result.advert_ref).to.equal('test456');
-        })
-    })
+      it('../models/adverts, Get an advert by Id', () => {
+        return getAdvertById(2)
+          .then(result => {
+            expect(result).to.be.an('Object');
+            expect(result.advert_ref).to.equal('def456');
+          })
+      })
+    });
 
-    it('../models/adverts, Get an advert by Id', () => {
-      return getAdvertById(2)
-        .then(result => {
-          expect(result).to.be.an('Object');
-          expect(result.advert_ref).to.equal('def456');
-        })
-    })
-
+    describe.only('Applications table', () => {
+      it('../models/applications, Fetches all applications', () => {
+        return getAllApplications()
+          .then(result => {
+            expect(result).to.be.an('array');
+            expect(result.length).to.equal(1);
+            expect(result[0].application_id).to.equal(1);
+          })
+      })
+    });
   })
 
-  describe.only('API testing', () => {
+  describe('API testing', () => {
 
     // adverts table
     it('../api/adverts, Fetches all adverts', () => {

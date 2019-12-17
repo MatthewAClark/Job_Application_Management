@@ -1,6 +1,7 @@
 
 const adverts = require('./db.adverts');
-
+const companies = require('./db.companies');
+const addresses = require('./db.addresses');
 
 const express  = require('express');
 const router = express.Router();
@@ -11,9 +12,9 @@ router.use(express.static('public/api'));
 
 router.use('/adverts', adverts);
 
-// router.use('/companies', companies);
+ router.use('/companies', companies);
 
-// router.use('/addresses', addresses);
+ router.use('/addresses', addresses);
 
 // router.use('/positions', positions);
 

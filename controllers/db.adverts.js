@@ -10,7 +10,7 @@ function addNewAdvert(req, res, next) {
   var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
   // Add new advert into advert table
-  postNewAdvert(req.body.company_name, req.body.job_title, req.body.advert_ref, req.body.contract_type, req.body.full_time_part_time, req.body.date_posted, date, req.body.closing_date, req.body.website, req.body.min_salary, req.body.max_salary, req.body.advert_description, req.body.agency, req.body.job_board, req.body.voluntary, req.body.job_location)
+  postNewAdvert(req.body.company_id, req.body.contact_id, req.body.address_id, req.body.job_title, req.body.advert_ref, req.body.contract_type, req.body.full_time_part_time, req.body.date_posted, date, req.body.closing_date, req.body.website, req.body.min_salary, req.body.max_salary, req.body.advert_description, req.body.agency, req.body.job_board, req.body.voluntary, req.body.job_location)
     .then(data => res.status(201).send(data))
     .catch((error) => {
       console.log(error)
