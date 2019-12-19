@@ -3,13 +3,13 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchAddressesByCompanyId, fetchAllAddresses, addNewCompanyAddress} = require('../controllers/db.addresses');
+const {fetchAllAddresses, fetchLiveAddressesByCompanyId, addNewCompanyAddress} = require('../controllers/db.addresses');
 
  router.get('/', fetchAllAddresses);
 
 //  router.get('/live', fetchLiveAdverts);
 
- router.get('/companies/:company_id', fetchAddressesByCompanyId);
+ router.get('/companies/live/:company_id', fetchLiveAddressesByCompanyId);
 
 //  router.put('/:advert_id', updateAdvertById)
 

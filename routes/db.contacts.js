@@ -3,9 +3,11 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId} = require('../controllers/db.contacts');
+const {fetchContactValuesById, fetchContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, addContactValue} = require('../controllers/db.contacts');
 
  router.get('/', fetchContacts);
+
+ router.get('/:contact_id', fetchContactValuesById);
 
 //  router.get('/live', fetchLiveAdverts);
 
@@ -18,6 +20,8 @@ const {fetchContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAd
 //  router.put('/:advert_id', updateAdvertById)
 
 router.post('/', addNewContact);
+
+router.post('/:contact_id', addContactValue);
 
 
 

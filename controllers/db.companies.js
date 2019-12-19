@@ -6,7 +6,7 @@ const { getAllCompanies, getCompanyList, postNewCompany} = require('../models/db
 function addNewCompany(req, res, next) {
 
  
-  postNewCompany(req.body.company_name)
+  postNewCompany(req.body.company_name, req.body.sector, req.body.industry, req.body.website)
     .then(data => res.status(201).send(data))
     .catch((error) => {
     

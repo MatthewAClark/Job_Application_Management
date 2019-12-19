@@ -1,5 +1,5 @@
 
-const { getAllContacts, getContactsByCompanyId, postNewContact, getContactsByAddressId, getContactsByCompanyAndAddressId } = require('../models/db.contacts');
+const { getContactValuesById, getAllContacts, getContactsByCompanyId, postNewContact, getContactsByAddressId, getContactsByCompanyAndAddressId, postContactValue } = require('../models/db.contacts');
 
 
 
@@ -9,6 +9,20 @@ function addNewContact(req, res, next) {
 
   // Add new company address into db
   postNewContact(req.body.company_id, req.body.address_id, req.body.contact_name, req.body.contact_position, req.body.capacity_known, req.body.reference, req.body.date_known)
+
+    .then(data => res.status(201).send(
+      data))
+
+    .catch((error) => {
+      console.log(error)
+      return next({ status: 400, error: error })
+    });
+}
+
+function addContactValue(req, res, next) {
+
+  // Add new company address into db
+  postContactValue(req.body.contact_id, req.body.contact_type, req.body.contact_value)
 
     .then(data => res.status(201).send(
       data))
@@ -34,6 +48,12 @@ function fetchContactsByAddressId(req, res, next) {
 
 function fetchContactsByCompanyAndAddressId(req, res, next) {
   getContactsByAddressId(req.params.company_id, req.params.address_id)
+    .then(data => res.status(200).send(data))
+    .catch((error) => next({ status: 404, error: error }))
+}
+
+function fetchContactValuesById(req, res, next) {
+  getContactValuesById(req.params.contact_id)
     .then(data => res.status(200).send(data))
     .catch((error) => next({ status: 404, error: error }))
 }
@@ -64,5 +84,5 @@ function fetchContacts(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = { fetchAllContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, fetchContacts };
+module.exports = {fetchContactValuesById, fetchAllContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, fetchContacts, addContactValue };
 

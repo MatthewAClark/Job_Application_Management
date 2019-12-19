@@ -3,7 +3,7 @@ const db = require('../config/index.js');
 
 
 
-const postNewCompany = (company_name) => db.one('INSERT INTO companies (company_name) VALUES ($1) RETURNING *', [company_name]);
+const postNewCompany = (company_name, sector, industry, website) => db.one('INSERT INTO companies (company_name, sector, industry, website) VALUES ($1, $2, $3, $4) RETURNING *', [company_name, sector, industry, website]);
     
         
 const getAllCompanies = () => db.manyOrNone('SELECT * FROM companies');
