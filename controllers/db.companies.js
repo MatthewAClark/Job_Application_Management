@@ -1,5 +1,5 @@
 
-const { getAllCompanies, getCompanyList, postNewCompany} = require('../models/db.companies');
+const { getCompanyById, getAllCompanies, getCompanyList, postNewCompany} = require('../models/db.companies');
 
 
 
@@ -26,5 +26,11 @@ function fetchCompanyList(req, res, next) {
     .catch((error) => next({ status: 404, error: error }));
 }
 
-module.exports = { addNewCompany, fetchCompanyList, fetchAllCompanies};
+function fetchCompanyById(req, res, next) {
+  getCompanyById(req.params.company_id)
+  .then(data => res.status(200).send(data))
+    .catch((error) => next({ status: 404, error: error }));
+}
+
+module.exports = { fetchCompanyById, addNewCompany, fetchCompanyList, fetchAllCompanies};
 
