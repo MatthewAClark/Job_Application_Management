@@ -1,5 +1,5 @@
 
-const { getContactValuesById, getAllContacts, getContactsByCompanyId, postNewContact, getContactsByAddressId, getContactsByCompanyAndAddressId, postContactValue } = require('../models/db.contacts');
+const { getContactById, getContactValues, getContactValuesById, getAllContacts, getContactsByCompanyId, postNewContact, getContactsByAddressId, getContactsByCompanyAndAddressId, postContactValue } = require('../models/db.contacts');
 
 
 
@@ -33,9 +33,20 @@ function addContactValue(req, res, next) {
     });
 }
 
+function fetchContactValues(req, res, next) {
+  getContactValues()
+  .then(data => res.status(200).send(data))
+    .catch((error) => next({ status: 404, error: error }))
+}
 
 function fetchContactsByCompanyId(req, res, next) {
   getContactsByCompanyId(req.params.company_id)
+    .then(data => res.status(200).send(data))
+    .catch((error) => next({ status: 404, error: error }))
+}
+
+function fetchContactById(req, res, next) {
+  getContactsByCompanyId(req.params.contact_id)
     .then(data => res.status(200).send(data))
     .catch((error) => next({ status: 404, error: error }))
 }
@@ -84,5 +95,5 @@ function fetchContacts(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = {fetchContactValuesById, fetchAllContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, fetchContacts, addContactValue };
+module.exports = {fetchContactValues, fetchContactById, fetchContactValuesById, fetchAllContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, fetchContacts, addContactValue };
 

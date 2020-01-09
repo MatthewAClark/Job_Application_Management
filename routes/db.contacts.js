@@ -3,13 +3,13 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchContactValuesById, fetchContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, addContactValue} = require('../controllers/db.contacts');
+const {fetchContactById, fetchContactValues, fetchContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, addContactValue} = require('../controllers/db.contacts');
 
  router.get('/', fetchContacts);
 
- router.get('/:contact_id', fetchContactValuesById);
+ router.get('/contact/:contact_id', fetchContactById);
 
-//  router.get('/live', fetchLiveAdverts);
+ router.get('/values', fetchContactValues);
 
  router.get('/companies/:company_id', fetchContactsByCompanyId);
 

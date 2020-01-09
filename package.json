@@ -19,7 +19,7 @@
     "pgpromise": "^0.1.1",
     "promisify-node": "^0.5.0",
     "supertest": "^3.1.0",
-    "node": "^7.6.0"
+    "node": "^10.6.0"
   },
   "devDependencies": {
     "mocha": "^6.2.2"
