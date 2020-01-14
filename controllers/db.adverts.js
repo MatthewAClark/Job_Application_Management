@@ -58,7 +58,7 @@ const addContact = (data) => new Promise(function (res, rej) {
 
 const addContactValue = (data) => new Promise(function (res, rej) {
   if (data.value_id === null) {
-    postContactValue(data.contact_id, data.contact_type, data.contact_value)
+    postContactValue(data.contact_id, data.contact_type, data.contact_value, data.correspondence_id)
       .then(value => res({ ...data, ...value }))
   } else {
     return res(data)
@@ -68,7 +68,14 @@ const addContactValue = (data) => new Promise(function (res, rej) {
 const addCorrespondence = (data) => new Promise(function (res, rej) {
   // if (data.correspondence_id === null) {
   postNewCorrespondence(data.contact_id, data.address_id, data.company_id, data.position_id)
-    .then(correspondence => res({ ...data, ...correspondence }))
+  .then(correspondence => {
+    correspondence.contact_values = data.contact_values.map((value, index) => {
+      value.correspondence_id = correspondence.correspondence_id
+      return value;
+    })
+    return res({ ...data, ...correspondence });
+  })
+    // .then(correspondence => res({ ...data, ...correspondence }))
   // } else {
   //   return res(data)
   // }
@@ -88,10 +95,11 @@ function addNewAdvert(req, res, next) {
   // Fetch todays date to datestamp entry into database
   var today = new Date();
   var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-  // req.body.date_seen = date;
+
+  if (req.body.date_seen === null) req.body.date_seen = date;
 
   // profession, company, address, contact, correspondence, position, advert and contact values
-  addProfession(req.body).then(data => addCompany(data)).then(data => addAddress(data)).then(data => addContact(data)).then(data => addCorrespondence(data)).then(data => addPosition(data)).then(data => addAdvert(data))
+  addProfession(req.body).then(data => addCompany(data)).then(data => addAddress(data)).then(data => addContact(data)).then(data => addPosition(data)).then(data => addCorrespondence(data)).then(data => addAdvert(data))
     .then(data => {
       return Promise.all(data.contact_values.filter(value => !(value.value_id > 0)).map((value, index) => {
         return addContactValue(value)

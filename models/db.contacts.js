@@ -5,7 +5,7 @@ const db = require('../config/index.js');
 
 const postNewContact = (company_id, address_id, contact_name, contact_position, capacity_known, reference, date_known) => db.one('INSERT INTO contacts (company_id, address_id, contact_name, contact_position, capacity_known,reference, date_known, live) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *', [company_id, address_id, contact_name, contact_position, capacity_known, reference, date_known, true]);
 
-const postContactValue = (contact_id, contact_type, contact_value) => db.one('INSERT INTO contact_values (contact_id, contact_type, contact_value) VALUES ($1, $2, $3) RETURNING *', [contact_id, contact_type, contact_value]);
+const postContactValue = (contact_id, contact_type, contact_value, correspondence_id) => db.one('INSERT INTO contact_values (contact_id, contact_type, contact_value, correspondence_id) VALUES ($1, $2, $3, $4) RETURNING *', [contact_id, contact_type, contact_value, correspondence_id]);
 
 const getContactsByCompanyId = (company_id) => db.manyOrNone('SELECT * FROM contacts WHERE company_id=$1', [company_id]);
 
