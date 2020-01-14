@@ -162,5 +162,5 @@ function fetchAdvertById(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = { addNewAdvert, fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById };
+module.exports = { addNewAdvert, addProfession, fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById };
 

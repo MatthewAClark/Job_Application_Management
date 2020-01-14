@@ -10,180 +10,199 @@ const request = require('supertest');
 const app = require('../server');
 
 // Import required model components
-const { getAllAdverts, getLiveAdverts, postNewAdvert, getAdvertById, putAdvertById } = require('../models/db.adverts');
+// const { getAllAdverts, getLiveAdverts, postNewAdvert, getAdvertById, putAdvertById } = require('../models/db.adverts');
 
-const {getAllApplications} = require ('../models/db.applications');
+// const {getAllApplications} = require ('../models/db.applications');
 
-describe('Adverts', () => {
+const {professions} = require('./models/professions.spec');
+const {positions} = require('./models/positions.spec');
+const {companies} = require('./models/companies.spec');
+const {addresses} = require('./models/addresses.spec');
+const {contacts} = require('./models/contacts.spec');
+const {correspondence} = require('./models/correspondence.spec');
+const {advert} = require('./models/advert.spec');
 
-  describe('Model testing', () => {
-    describe('Adverts table', () => {
-      it('../models/adverts, Fetches all adverts', () => {
-        return getAllAdverts()
-          .then(result => {
-            expect(result).to.be.an('array');
-            expect(result.length).to.equal(2);
-            expect(result[0].advert_ref).to.equal('abc123');
-          })
-      })
+const {controlleradverts} = require('./controllers/adverts.spec')
 
-      it('../models/adverts, Fetches live adverts only', () => {
-        return getLiveAdverts()
-          .then(result => {
-            expect(result).to.be.an('array');
-            expect(result.length).to.equal(1);
-            expect(result[0].advert_ref).to.equal('def456');
-          })
-      })
+describe('professions test', () => professions());
+describe('positions test', () => positions());
+describe('companies test', () => companies());
+describe('addresses test', () => addresses());
+describe('contacts test', () => contacts());
+describe('correspondence test', () => correspondence());
+describe('advert test', () => advert());
+describe.only('advert controller test', () => controlleradverts());
 
-      it('../models/adverts, Posts an advert', () => {
-        return postNewAdvert('Test Company Ltd', 'Test job', 'test123', '', '', null, null, null, '', '', '', 'This is a test', true, 'test', false, 'test location')
-          .then(result => {
-            expect(result).to.be.an('Object');
-            expect(result.advert_ref).to.equal('test123');
-          })
-      })
+// describe('Adverts', () => {
 
-      it('../models/adverts, Updates an advert', () => {
-        return putAdvertById(1, 'Another test company', 'Test job 2', 'test456', '', '', null, null, false, '', '', '', 'This is another test', true, 'test', false, 'test location 2')
-          .then(result => {
-            expect(result).to.be.an('Object');
-            expect(result.advert_ref).to.equal('test456');
-          })
-      })
+//   describe('Model testing', () => {
+//     describe('Adverts table', () => {
+//       it('../models/adverts, Fetches all adverts', () => {
+//         return getAllAdverts()
+//           .then(result => {
+//             expect(result).to.be.an('array');
+//             expect(result.length).to.equal(2);
+//             expect(result[0].advert_ref).to.equal('abc123');
+//           })
+//       })
 
-      it('../models/adverts, Get an advert by Id', () => {
-        return getAdvertById(2)
-          .then(result => {
-            expect(result).to.be.an('Object');
-            expect(result.advert_ref).to.equal('def456');
-          })
-      })
-    });
+//       it('../models/adverts, Fetches live adverts only', () => {
+//         return getLiveAdverts()
+//           .then(result => {
+//             expect(result).to.be.an('array');
+//             expect(result.length).to.equal(1);
+//             expect(result[0].advert_ref).to.equal('def456');
+//           })
+//       })
 
-    describe.only('Applications table', () => {
-      it('../models/applications, Fetches all applications', () => {
-        return getAllApplications()
-          .then(result => {
-            expect(result).to.be.an('array');
-            expect(result.length).to.equal(1);
-            expect(result[0].application_id).to.equal(1);
-          })
-      })
-    });
-  })
+//       it('../models/adverts, Posts an advert', () => {
+//         return postNewAdvert('Test Company Ltd', 'Test job', 'test123', '', '', null, null, null, '', '', '', 'This is a test', true, 'test', false, 'test location')
+//           .then(result => {
+//             expect(result).to.be.an('Object');
+//             expect(result.advert_ref).to.equal('test123');
+//           })
+//       })
 
-  describe('API testing', () => {
+//       it('../models/adverts, Updates an advert', () => {
+//         return putAdvertById(1, 'Another test company', 'Test job 2', 'test456', '', '', null, null, false, '', '', '', 'This is another test', true, 'test', false, 'test location 2')
+//           .then(result => {
+//             expect(result).to.be.an('Object');
+//             expect(result.advert_ref).to.equal('test456');
+//           })
+//       })
 
-    // adverts table
-    it('../api/adverts, Fetches all adverts', () => {
+//       it('../models/adverts, Get an advert by Id', () => {
+//         return getAdvertById(2)
+//           .then(result => {
+//             expect(result).to.be.an('Object');
+//             expect(result.advert_ref).to.equal('def456');
+//           })
+//       })
+//     });
 
-      return request(app) // run mock server
-        .get('/api/adverts')
-        .expect(200)
-        .then(res => {
+//     describe.only('Applications table', () => {
+//       it('../models/applications, Fetches all applications', () => {
+//         return getAllApplications()
+//           .then(result => {
+//             expect(result).to.be.an('array');
+//             expect(result.length).to.equal(1);
+//             expect(result[0].application_id).to.equal(1);
+//           })
+//       })
+//     });
+//   })
 
-          expect(res.body).to.be.an('array')
-          expect(res.body.length).to.equal(2);
-          expect(res.body[0].advert_ref).to.equal('abc123');
-        });
+//   describe('API testing', () => {
 
-    });
+//     // adverts table
+//     it('../api/adverts, Fetches all adverts', () => {
 
-    it('../api/adverts, Fetches live adverts', () => {
+//       return request(app) // run mock server
+//         .get('/api/adverts')
+//         .expect(200)
+//         .then(res => {
 
-      return request(app) // run mock server
-        .get('/api/adverts/live')
-        .expect(200)
-        .then(res => {
+//           expect(res.body).to.be.an('array')
+//           expect(res.body.length).to.equal(2);
+//           expect(res.body[0].advert_ref).to.equal('abc123');
+//         });
 
-          expect(res.body).to.be.an('array')
-          expect(res.body.length).to.equal(1);
-          expect(res.body[0].advert_ref).to.equal('def456');
-        });
+//     });
 
-    });
+//     it('../api/adverts, Fetches live adverts', () => {
 
-    it('../api/adverts/:id, Fetches advert by id', () => {
+//       return request(app) // run mock server
+//         .get('/api/adverts/live')
+//         .expect(200)
+//         .then(res => {
 
-      return request(app) // run mock server
-        .get('/api/adverts/2')
-        .expect(200)
-        .then(res => {
+//           expect(res.body).to.be.an('array')
+//           expect(res.body.length).to.equal(1);
+//           expect(res.body[0].advert_ref).to.equal('def456');
+//         });
 
-          expect(res.body).to.be.an('object')
-          expect(res.body.advert_ref).to.equal('def456');
-        });
+//     });
 
-    });
+//     it('../api/adverts/:id, Fetches advert by id', () => {
 
-    it('../api/adverts, Posts an advert to the db', () => {
+//       return request(app) // run mock server
+//         .get('/api/adverts/2')
+//         .expect(200)
+//         .then(res => {
 
-      // runs mock server
-      return request(app)
-        //get request to mock server
-        .post('/api/adverts/')
-        .send({
-          company_name: 'Test Company Ltd',
-          job_title: 'Test job',
-          advert_ref: 'test123',
-          contract_type: '',
-          full_time_part_time: '',
-          date_posted: null,
-          closing_date: null,
-          website: '',
-          min_salary: '',
-          max_salary: '',
-          advert_description: 'This is a test',
-          agency: true,
-          job_board: 'test',
-          voluntary: false,
-          job_location: 'test location'
-        })
-        // supertest expect  - key on promise object
-        .expect(201)
-        .then(res => {
-          expect(res.body).to.be.an('Object');
-          expect(res.body.advert_ref).to.equal('test123')
-        })
-    })
+//           expect(res.body).to.be.an('object')
+//           expect(res.body.advert_ref).to.equal('def456');
+//         });
 
-    it('../api/adverts, Updates an advert to the db', () => {
+//     });
 
-      // runs mock server
-      return request(app)
-        //get request to mock server
-        .put('/api/adverts/1')
-        .send({
-          company_name: 'Test Company Ltd',
-          job_title: 'Test job',
-          advert_ref: 'test789',
-          contract_type: '',
-          full_time_part_time: '',
-          date_posted: null,
-          closing_date: null,
-          live: false,
-          website: '',
-          min_salary: '',
-          max_salary: '',
-          advert_description: 'This is a test 2',
-          agency: true,
-          job_board: 'test',
-          voluntary: false,
-          job_location: 'test location'
-        })
-        // supertest expect  - key on promise object
-        .expect(200)
-        .then(res => {
-          expect(res.body).to.be.an('Object');
-          expect(res.body.advert_id).to.equal(1)
-          expect(res.body.advert_ref).to.equal('test789')
-        })
-    })
+//     it('../api/adverts, Posts an advert to the db', () => {
 
-  })
+//       // runs mock server
+//       return request(app)
+//         //get request to mock server
+//         .post('/api/adverts/')
+//         .send({
+//           company_name: 'Test Company Ltd',
+//           job_title: 'Test job',
+//           advert_ref: 'test123',
+//           contract_type: '',
+//           full_time_part_time: '',
+//           date_posted: null,
+//           closing_date: null,
+//           website: '',
+//           min_salary: '',
+//           max_salary: '',
+//           advert_description: 'This is a test',
+//           agency: true,
+//           job_board: 'test',
+//           voluntary: false,
+//           job_location: 'test location'
+//         })
+//         // supertest expect  - key on promise object
+//         .expect(201)
+//         .then(res => {
+//           expect(res.body).to.be.an('Object');
+//           expect(res.body.advert_ref).to.equal('test123')
+//         })
+//     })
 
-});
+//     it('../api/adverts, Updates an advert to the db', () => {
+
+//       // runs mock server
+//       return request(app)
+//         //get request to mock server
+//         .put('/api/adverts/1')
+//         .send({
+//           company_name: 'Test Company Ltd',
+//           job_title: 'Test job',
+//           advert_ref: 'test789',
+//           contract_type: '',
+//           full_time_part_time: '',
+//           date_posted: null,
+//           closing_date: null,
+//           live: false,
+//           website: '',
+//           min_salary: '',
+//           max_salary: '',
+//           advert_description: 'This is a test 2',
+//           agency: true,
+//           job_board: 'test',
+//           voluntary: false,
+//           job_location: 'test location'
+//         })
+//         // supertest expect  - key on promise object
+//         .expect(200)
+//         .then(res => {
+//           expect(res.body).to.be.an('Object');
+//           expect(res.body.advert_id).to.equal(1)
+//           expect(res.body.advert_ref).to.equal('test789')
+//         })
+//     })
+
+//   })
+
+// });
 
 //   /// Post to the database
 

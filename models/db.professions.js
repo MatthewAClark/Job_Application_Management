@@ -13,8 +13,10 @@ const postNewProfession = ( profession, profession_profile) => db.one('INSERT IN
 // const getLiveAdverts = () => db.manyOrNone('SELECT * FROM adverts FULL JOIN companies ON adverts.company_id=companies.company_id WHERE adverts.live=true');
 
 const putProfessionById = (profession_id, profession, profession_profile) => {
-    return db.one('UPDATE positions SET profession=$1, profession_profile=$2, WHERE profession_id=$3 RETURNING *', [profession, profession_profile, profession_id]);
+    return db.one('UPDATE professions SET profession=$1, profession_profile=$2 WHERE profession_id=$3 RETURNING *', [profession, profession_profile, profession_id]);
 }
 
+const getProfessions = () => db.manyOrNone('SELECT * FROM professions');
+
 const getProfessionList = () => db.manyOrNone('SELECT profession_id, profession FROM professions')
-module.exports = {postNewProfession, getProfessionList, putProfessionById};
+module.exports = {postNewProfession, getProfessionList, putProfessionById, getProfessions};
