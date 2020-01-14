@@ -44,13 +44,13 @@ const addContact = (data) => new Promise(function (res, rej) {
   if (data.contact_id === null) {
     postNewContact(data.company_id, data.address_id, data.contact_name, data.contact_position, data.capacity_known, data.reference, data.date_known)
       .then(contact => {
-        contact.contact_values = data.contact_values.map(value => {
+        contact.contact_values = data.contact_values.map((value, index) => {
           value.contact_id = contact.contact_id
           return value;
         })
         return res({ ...data, ...contact });
       })
-      // .then( data =>res(data))
+    // .then( data =>res(data))
   } else {
     return res(data)
   }
@@ -88,15 +88,15 @@ function addNewAdvert(req, res, next) {
   // Fetch todays date to datestamp entry into database
   var today = new Date();
   var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-  req.body.date_seen = date;
+  // req.body.date_seen = date;
 
   // profession, company, address, contact, correspondence, position, advert and contact values
   addProfession(req.body).then(data => addCompany(data)).then(data => addAddress(data)).then(data => addContact(data)).then(data => addCorrespondence(data)).then(data => addPosition(data)).then(data => addAdvert(data))
     .then(data => {
-     return Promise.all(data.contact_values.filter(value => !(value.value_id > 0)).map((value, index) => {
-         return addContactValue(value)
+      return Promise.all(data.contact_values.filter(value => !(value.value_id > 0)).map((value, index) => {
+        return addContactValue(value)
       })).then(values => {
-        return {...data, contact_values: values}
+        return { ...data, contact_values: values }
       })
     })
     .then(data => res.status(201).send(data))
@@ -162,5 +162,5 @@ function fetchAdvertById(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = { addNewAdvert, addProfession, fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById };
+module.exports = { addCorrespondence, addNewAdvert, addProfession, addCompany, addAddress, addContact, addPosition, addAdvert, addContactValue, fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById };
 
