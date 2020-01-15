@@ -82,7 +82,7 @@ const addCorrespondence = (data) => new Promise(function (res, rej) {
 });
 
 const addAdvert = (data) => new Promise(function (res, rej) {
-  postNewAdvert(data.position_id, data.correspondence_id, data.advert_ref, data.contract_type, data.full_time_part_time, data.date_posted, data.date_seen, data.closing_date, data.website, data.min_salary, data.max_salary, data.advert_description, data.agency, data.job_board, data.voluntary, data.job_location)
+  postNewAdvert(data.position_id, data.correspondence_id, data.advert_ref, data.contract_type, data.full_time_part_time, data.date_posted, data.date_seen, data.closing_date, data.advert_url, data.min_salary, data.max_salary, data.advert_description, data.agency, data.job_board, data.voluntary, data.job_location)
     .then(advert => res({ ...data, ...advert }))
 
 });
