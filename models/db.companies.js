@@ -4,6 +4,8 @@ const db = require('../config/index.js');
 
 
 const postNewCompany = (company_name, sector, industry, website) => db.one('INSERT INTO companies (company_name, sector, industry, website) VALUES ($1, $2, $3, $4) RETURNING *', [company_name, sector, industry, website]);
+
+const seedNewCompany = (company_id, company_name, sector, industry, website) => db.one('INSERT INTO companies (company_id, company_name, sector, industry, website) VALUES ($1, $2, $3, $4, $5) RETURNING *', [company_id, company_name, sector, industry, website]);
     
         
 const getAllCompanies = () => db.manyOrNone('SELECT * FROM companies');
@@ -18,4 +20,4 @@ const getCompanyById = (company_id) => db.oneOrNone('SELECT * FROM companies WHE
 
 const putCompanyById = (company_id, company_name, sector, industry, website) => db.one('UPDATE companies SET company_name=$1, sector=$2, industry=$3, website=$4 WHERE company_id=$5 RETURNING *', [company_name, sector, industry, website, company_id])
 
-module.exports = { putCompanyById, getCompanyById, postNewCompany, getAllCompanies, getCompanyList};
+module.exports = { seedNewCompany, putCompanyById, getCompanyById, postNewCompany, getAllCompanies, getCompanyList};

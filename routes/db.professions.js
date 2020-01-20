@@ -3,9 +3,9 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchProfessionList} = require('../controllers/db.professions');
+const {fetchProfessionList, fetchProfessions} = require('../controllers/db.professions');
 
-//  router.get('/', fetchAllCompanies);
+ router.get('/', fetchProfessions);
 
  router.get('/list', fetchProfessionList);
 

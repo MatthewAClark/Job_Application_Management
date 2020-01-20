@@ -1,8 +1,12 @@
 /* eslint-disable no-console */
-if(!process.env.NODE_ENV)  process.env.NODE_ENV = 'dev';
-if(process.env.NODE_ENV !== 'production') require('dotenv').config({
-  path: `./.${process.env.NODE_ENV}.env`
-});
+// if(!process.env.NODE_ENV)  process.env.NODE_ENV = 'dev';
+// if(process.env.NODE_ENV !== 'prod') require('dotenv').config({
+//   path: `./.${process.env.NODE_ENV}.env`
+// });
+
+require('dotenv').config({path: `./.${process.env.NODE_ENV}.env`})
+
+
 
 
 const jsonParse = require('body-parser').json();

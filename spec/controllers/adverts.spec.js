@@ -7,7 +7,7 @@ const request = require('supertest');
 const app = require('../../server');
 
 // Import required model components
-const { addContactValue, addProfession, addCompany, addAddress, addContact, addCorrespondence, addPosition, addAdvert } = require('../../controllers/db.adverts');
+const { updateAdvertById, updateCorrespondence, updateAdvert, updatePosition, addContactValue, addProfession, addCompany, addAddress, addContact, addCorrespondence, addPosition, addAdvert } = require('../../controllers/db.adverts');
 // const { getAllAdverts, getLiveAdverts, postNewAdvert, getAdvertById, putAdvertById } = require('../models/db.adverts');
 
 // const {getAllApplications} = require ('../models/db.applications');
@@ -223,7 +223,7 @@ const controlleradverts = () => {
 
       })
 
-      describe.only('new advert', () => {
+      describe('new advert', () => {
         //// advert
         it('../controllers/newadvert, Adds a new position', () => {
 
@@ -284,6 +284,102 @@ const controlleradverts = () => {
         })
 
       })
+
+      describe('update position', () => {
+        //// advert
+        it('../controllers/positions, Update position', () => {
+          return updatePosition({ position_id: 1, position_title: 'Junior VAT Officer', anotherKey: 'test' })
+            .then(result => {
+              expect(result).to.be.an('object');
+              expect(result.position_id).to.equal(1)
+              expect(result.position_title).to.equal('Junior VAT Officer');
+              expect(result.anotherKey).to.equal('test')
+            })
+        })
+
+      })
+
+      describe('update advert', () => {
+        //// advert
+        it('../controllers/adverts, Update advert', () => {
+          return updateAdvert({ advert_id: 1, advert_ref: 'REC/19/06732', contract_type: 'contract', full_time_part_time: 'part-time', date_posted: '2008-12-20', date_seen: '2019-12-20', closing_date: '2020-01-15', live: false, advert_url: 'https://www.somersetjobs.gov.uk', min_salary: '21,032', max_salary: '25,025', advert_description: 'Junior VAT officer required to make the tea', agency: true, job_board: 'indeed', voluntary: false, job_location: 'Plymouth', applied: false, anotherKey: 'test' })
+            .then(result => {
+              expect(result).to.be.an('object');
+              expect(result.advert_id).to.equal(1)
+              expect(result.advert_ref).to.equal('REC/19/06732');
+              expect(result.job_location).to.equal('Plymouth');
+              expect(result.advert_url).to.equal('https://www.somersetjobs.gov.uk');
+              expect(result.advert_description).to.equal('Junior VAT officer required to make the tea');
+              expect(result.anotherKey).to.equal('test')
+            })
+        })
+
+      })
+
+      describe('update correspondence', () => {
+        //// advert
+        it('../controllers/adverts, Update correspondence', () => {
+          return updateCorrespondence({ correspondence_id: 1, contact_id: 2, address_id: 2, company_id: 2, anotherKey: 'test' })
+            .then(result => {
+              expect(result).to.be.an('object');
+              expect(result.correspondence_id).to.equal(1)
+              expect(result.contact_id).to.equal(2);
+              expect(result.address_id).to.equal(2);
+              expect(result.company_id).to.equal(2);
+              expect(result.anotherKey).to.equal('test')
+            })
+        })
+
+      })
+
+      describe('update advert', () => {
+        //// advert
+        it('../controllers/adverts, Update correspondence', () => {
+
+          return request(app)
+          //get request to mock server
+          .put('/api/adverts/1')
+          .send({
+            advert_id: 1,
+           profession_id: 1, 
+            company_id: 1,
+            address_id: 1,
+            contact_id: 1,
+            position_id: 1,
+            contact_values: [],
+            correspondence_id: 1,
+            position_title: 'junior VAT Officer',
+            advert_description: 'make the tea',
+            advert_ref: 'ABC123',
+            contract_type: 'permanent',
+            full_time_part_time: 'full-time',
+            date_posted: null,
+            date_seen: null,
+            closing_date: null,
+            live: true,
+            advert_url: 'www.advertjobs.com/vacancy',
+            min_salary: '£3',
+            max_salary: '$5',
+            agency: false,
+            job_board: '',
+            voluntary: false,
+            job_location: 'Birmingham',
+            applied: false,
+            anotherKey: 'test' })
+            .expect(200)
+
+    
+            .then(result => {
+              expect(result.body).to.be.an('object');
+              expect(result.body.company_id).to.equal(1)
+              expect(result.body.job_location).to.equal('Birmingham');
+              expect(result.body.position_title).to.equal('junior VAT Officer');
+              expect(result.body.anotherKey).to.equal('test');
+            })
+        })
+
+      })
+
 
       // it('../api/adverts, Updates an advert to the db', () => {
 

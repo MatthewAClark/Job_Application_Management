@@ -21,6 +21,7 @@ const {addresses} = require('./models/addresses.spec');
 const {contacts} = require('./models/contacts.spec');
 const {correspondence} = require('./models/correspondence.spec');
 const {advert} = require('./models/advert.spec');
+const {skill} = require('./models/skills.spec')
 
 const {controlleradverts} = require('./controllers/adverts.spec')
 
@@ -31,7 +32,9 @@ describe('addresses test', () => addresses());
 describe('contacts test', () => contacts());
 describe('correspondence test', () => correspondence());
 describe('advert test', () => advert());
-describe.only('advert controller test', () => controlleradverts());
+describe('advert controller test', () => controlleradverts());
+describe.only('skills model test', () => skill());
+
 
 // describe('Adverts', () => {
 

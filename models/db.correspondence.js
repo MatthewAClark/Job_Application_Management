@@ -4,9 +4,11 @@ const db = require('../config/index.js');
 
 
 const postNewCorrespondence = (contact_id, address_id, company_id, position_id) => db.one('INSERT INTO correspondence (contact_id, address_id, company_id, position_id) VALUES ($1, $2, $3, $4) RETURNING *', [contact_id, address_id, company_id, position_id]);
+
+const seedNewCorrespondence = (correspondence_id, contact_id, address_id, company_id, position_id) => db.one('INSERT INTO correspondence (correspondence_id, contact_id, address_id, company_id, position_id) VALUES ($1, $2, $3, $4, $5) RETURNING *', [correspondence_id, contact_id, address_id, company_id, position_id]);
     
         
-// const getAllAdverts = () => db.manyOrNone('SELECT * FROM adverts FULL JOIN companies ON adverts.company_id=companies.company_id');
+const getAllCorrespondence = () => db.manyOrNone('SELECT * FROM correspondence');
 
 // const getAllAdverts = () => db.manyOrNone('SELECT * FROM adverts FULL JOIN positions ON adverts.position_id=positions.positions_id');
 
@@ -16,6 +18,6 @@ const postNewCorrespondence = (contact_id, address_id, company_id, position_id) 
 
 const putCorrespondenceById = (correspondence_id, contact_id, address_id, company_id) => {
   
-    return db.one('UPDATE correspondence SET contact_id=$1, address_id=$2, company_id=$3, WHERE correspondence_id=$4 RETURNING *', [contact_id, address_id, company_id, correspondence_id]);
+    return db.one('UPDATE correspondence SET contact_id=$1, address_id=$2, company_id=$3 WHERE correspondence_id=$4 RETURNING *', [contact_id, address_id, company_id, correspondence_id]);
 }
-module.exports = {postNewCorrespondence, putCorrespondenceById};
+module.exports = {seedNewCorrespondence, postNewCorrespondence, putCorrespondenceById, getAllCorrespondence};

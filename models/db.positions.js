@@ -5,6 +5,8 @@ const db = require('../config/index.js');
 
 const postNewPosition = ( profession_id, position_title) => db.one('INSERT INTO positions (profession_id, position_title) VALUES ($1, $2) RETURNING *', [profession_id, position_title]);
 
+const seedNewPosition = ( position_id, profession_id, position_title) => db.one('INSERT INTO positions (position_id, profession_id, position_title) VALUES ($1, $2, $3) RETURNING *', [position_id, profession_id, position_title]);
+
 const getAllPositions = () => db.manyOrNone('SELECT * FROM positions');
     
         
@@ -17,4 +19,4 @@ const getAllPositions = () => db.manyOrNone('SELECT * FROM positions');
 const putPositionById = (position_id, profession_id, position_title) => {
     return db.one('UPDATE positions SET profession_id=$1, position_title=$2 WHERE position_id=$3 RETURNING *', [profession_id, position_title, position_id]);
 }
-module.exports = {getAllPositions, postNewPosition, putPositionById};
+module.exports = {seedNewPosition, getAllPositions, postNewPosition, putPositionById};

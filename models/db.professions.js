@@ -4,6 +4,8 @@ const db = require('../config/index.js');
 
 
 const postNewProfession = ( profession, profession_profile) => db.one('INSERT INTO professions (profession, profession_profile) VALUES ($1, $2) RETURNING *', [profession, profession_profile]);
+
+const seedNewProfession = ( profession_id, profession, profession_profile) => db.one('INSERT INTO professions (profession_id, profession, profession_profile) VALUES ($1, $2, $3) RETURNING *', [profession_id, profession, profession_profile]);
     
         
 // const getAllAdverts = () => db.manyOrNone('SELECT * FROM adverts FULL JOIN companies ON adverts.company_id=companies.company_id');
@@ -19,4 +21,4 @@ const putProfessionById = (profession_id, profession, profession_profile) => {
 const getProfessions = () => db.manyOrNone('SELECT * FROM professions');
 
 const getProfessionList = () => db.manyOrNone('SELECT profession_id, profession FROM professions')
-module.exports = {postNewProfession, getProfessionList, putProfessionById, getProfessions};
+module.exports = {seedNewProfession, postNewProfession, getProfessionList, putProfessionById, getProfessions};

@@ -1,6 +1,6 @@
 /* eslint-disable no-console*/
 
-
+process.env.NODE_ENV = 'dev'
 
 const app = require('./server.js');
 const PORT = process.env.PORT;
