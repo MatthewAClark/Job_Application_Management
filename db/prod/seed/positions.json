@@ -1,1 +1,17 @@
-[]
+[
+    {
+        "position_id": 1,
+        "profession_id": 1,
+        "position_title": "Technical Assistant - Networks"
+    },
+    {
+        "position_id": 2,
+        "profession_id": 2,
+        "position_title": "Technical Officer [Track] - Exeter Central Station"
+    },
+    {
+        "position_id": 3,
+        "profession_id": 1,
+        "position_title": "Administrator - Personnel Admin (Training)"
+    }
+]

@@ -2,12 +2,17 @@
 
 // component model testing
 process.env.NODE_ENV = 'test';
+
+
+   
+
 const { expect } = require('chai');
+
 const request = require('supertest');
 const app = require('../../server');
 
 // Import required model components
-const { updateAdvertById, updateCorrespondence, updateAdvert, updatePosition, addContactValue, addProfession, addCompany, addAddress, addContact, addCorrespondence, addPosition, addAdvert } = require('../../controllers/db.adverts');
+const { updateAdvertById, addNewContacts, updateCorrespondence, updateAdvert, updatePosition, addContactValue, addProfession, addCompany, addAddress, addContact, addCorrespondence, addPosition, addAdvert } = require('../../controllers/db.adverts');
 // const { getAllAdverts, getLiveAdverts, postNewAdvert, getAdvertById, putAdvertById } = require('../models/db.adverts');
 
 // const {getAllApplications} = require ('../models/db.applications');
@@ -123,6 +128,117 @@ const controlleradverts = () => {
 
       })
 
+      describe.only('addNewContacts', () => {
+        it('../controllers/adverts, AddNewContact returns an object we give it with no contacts intact', () => {
+          return addNewContacts({
+            contacts: [{contact_id: undefined}],
+            anotherKey: 'Test'
+          })
+            .then(result => {
+              expect(result).to.be.an('object');
+              expect(result.anotherKey).to.equal('Test')
+            })
+        })
+
+        it('../controllers/adverts, AddNewContact - ignores a contact already added and returns the object', () => {
+          return addNewContacts({
+            contacts: [{ contact_id: 1, contact_name: 'Fred' }]
+          })
+            .then(result => {
+              expect(result).to.be.an('object');
+              expect(result.contacts[0].contact_id).to.equal(1)
+              expect(result.contacts[0].contact_name).to.equal('Fred')
+            })
+        })
+
+        it('../controllers/adverts, AddNewContact - adds a single contact when contact_id=null', () => {
+          return addNewContacts({
+            contacts: [{
+              contact_id: null,
+              contact_name: 'Fred',
+              company_id: 1,
+              address_id: 1,
+              contact_position: '',
+              capacity_known: '',
+              reference: false,
+              date_known: null
+            }],
+          })
+            .then(result => {
+              
+              expect(result).to.be.an('object');
+              expect(result.contacts[0].contact_id).to.equal(2)
+              expect(result.contacts[0].contact_name).to.equal('Fred')
+            })
+        })
+
+        it.only('../controllers/adverts, AddNewContact - adds multiple contacts when contact_id=null', () => {
+          return addNewContacts({
+            contacts: [{
+              contact_id: null,
+              contact_name: 'Fred',
+              company_id: 1,
+              address_id: 1,
+              contact_position: '',
+              capacity_known: '',
+              reference: false,
+              date_known: null
+            },{
+              contact_id: null,
+              contact_name: 'Barny',
+              company_id: 1,
+              address_id: 1,
+              contact_position: '',
+              capacity_known: '',
+              reference: false,
+              date_known: null
+            }],
+          })
+            .then(result => {
+              expect(result).to.be.an('object');
+
+              expect(result.contacts[0].contact_id).to.be.an('number')
+              expect(result.contacts[0].contact_name).to.equal('Fred')
+              expect(result.contacts[1].contact_id).to.be.an('number')
+              expect(result.contacts[1].contact_name).to.equal('Barny')
+            })
+        })
+
+
+        it.only('../controllers/adverts, AddNewContact - only adds contact when contact_id is null', () => {
+          return addNewContacts({
+            contacts: [{
+              contact_id: 1,
+              contact_name: 'Fred',
+              company_id: 1,
+              address_id: 1,
+              contact_position: '',
+              capacity_known: '',
+              reference: false,
+              date_known: null
+            },{
+              contact_id: null,
+              contact_name: 'Barny',
+              company_id: 1,
+              address_id: 1,
+              contact_position: '',
+              capacity_known: '',
+              reference: false,
+              date_known: null
+            }],
+          })
+            .then(result => {
+              expect(result).to.be.an('object');
+
+              expect(result.contacts[0].contact_id).to.equal(1)
+              expect(result.contacts[0].contact_name).to.equal('Fred')
+              expect(result.contacts[1].contact_id).to.be.an('number')
+              expect(result.contacts[1].contact_name).to.equal('Barny')
+            })
+        })
+
+      })
+
       describe('contacts', () => {
         //// Contacts
         it('../controllers/adverts, Adds a new contact if it is not already defined by id, and passes all data back', () => {
@@ -233,7 +349,7 @@ const controlleradverts = () => {
             //get request to mock server
             .post('/api/adverts')
             .send({
-              contact_values: [{value_id: null, contact_type: 'email', contact_value: 'wilma@theflintstones.com'},{value_id: null, contact_type: 'telephone', contact_value: '0123456789'}],
+              contact_values: [{ value_id: null, contact_type: 'email', contact_value: 'wilma@theflintstones.com' }, { value_id: null, contact_type: 'telephone', contact_value: '0123456789' }],
               contact_name: 'Wilma Flintstone',
               contact_position: 'House Wife',
               capacity_known: 'Fred',
@@ -278,8 +394,8 @@ const controlleradverts = () => {
               //           expect(res.body.advert_id).to.equal(1)
               //           expect(res.body.advert_ref).to.equal('test789')
               //         })
-         
-            
+
+
             })
         })
 
@@ -337,38 +453,39 @@ const controlleradverts = () => {
         it('../controllers/adverts, Update correspondence', () => {
 
           return request(app)
-          //get request to mock server
-          .put('/api/adverts/1')
-          .send({
-            advert_id: 1,
-           profession_id: 1, 
-            company_id: 1,
-            address_id: 1,
-            contact_id: 1,
-            position_id: 1,
-            contact_values: [],
-            correspondence_id: 1,
-            position_title: 'junior VAT Officer',
-            advert_description: 'make the tea',
-            advert_ref: 'ABC123',
-            contract_type: 'permanent',
-            full_time_part_time: 'full-time',
-            date_posted: null,
-            date_seen: null,
-            closing_date: null,
-            live: true,
-            advert_url: 'www.advertjobs.com/vacancy',
-            min_salary: '£3',
-            max_salary: '$5',
-            agency: false,
-            job_board: '',
-            voluntary: false,
-            job_location: 'Birmingham',
-            applied: false,
-            anotherKey: 'test' })
+            //get request to mock server
+            .put('/api/adverts/1')
+            .send({
+              advert_id: 1,
+              profession_id: 1,
+              company_id: 1,
+              address_id: 1,
+              contact_id: 1,
+              position_id: 1,
+              contact_values: [],
+              correspondence_id: 1,
+              position_title: 'junior VAT Officer',
+              advert_description: 'make the tea',
+              advert_ref: 'ABC123',
+              contract_type: 'permanent',
+              full_time_part_time: 'full-time',
+              date_posted: null,
+              date_seen: null,
+              closing_date: null,
+              live: true,
+              advert_url: 'www.advertjobs.com/vacancy',
+              min_salary: '£3',
+              max_salary: '$5',
+              agency: false,
+              job_board: '',
+              voluntary: false,
+              job_location: 'Birmingham',
+              applied: false,
+              anotherKey: 'test'
+            })
             .expect(200)
 
-    
+
             .then(result => {
               expect(result.body).to.be.an('object');
               expect(result.body.company_id).to.equal(1)

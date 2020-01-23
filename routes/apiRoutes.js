@@ -3,7 +3,7 @@ const adverts = require('./db.adverts');
 const companies = require('./db.companies');
 const addresses = require('./db.addresses');
 const contacts = require('./db.contacts');
-const professions = require('./db.professions');
+const occupations = require('./db.occupations');
 const positions = require('./db.positions');
 const correspondence = require('./db.correspondence');
 
@@ -23,11 +23,11 @@ router.use('/positions', positions);
 
  router.use('/addresses', addresses);
 
-router.use('/professions', professions);
+router.use('/occupations', occupations);
 
 // router.use('/positions', positions);
 
-// router.use('/professions', professions)
+// router.use('/occupations', occupations)
 
 router.use('/contacts', contacts);
 

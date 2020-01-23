@@ -1,3 +1,9 @@
 [
-    
+    {
+        "address_id": 1,
+        "company_id": 2,
+        "address_field": "Exeter Central Station",
+        "postcode": "",
+        "live": true
+    }
 ]

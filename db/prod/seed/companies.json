@@ -1,1 +1,23 @@
-[]
+[
+    {
+        "company_id": 1,
+        "company_name": "South West Water",
+        "sector": null,
+        "industry": null,
+        "website": null
+    },
+    {
+        "company_id": 2,
+        "company_name": "Network Rail",
+        "sector": null,
+        "industry": null,
+        "website": null
+    },
+    {
+        "company_id": 3,
+        "company_name": "Lidl",
+        "sector": null,
+        "industry": null,
+        "website": null
+    }
+]

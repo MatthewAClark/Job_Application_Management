@@ -6,7 +6,7 @@ const { postNewCorrespondence, putCorrespondenceById } = require('../models/db.c
 const { postNewContact, postContactValue } = require('../models/db.contacts');
 const { postNewAddress } = require('../models/db.addresses');
 const { postNewCompany } = require('../models/db.companies');
-const { postNewProfession } = require('../models/db.professions');
+const { postNewProfession } = require('../models/db.occupations');
 
 const addProfession = (data) => new Promise(function (res, rej) {
   if (data.profession_id === null) {
@@ -40,6 +40,32 @@ const addAddress = (data) => new Promise(function (res, rej) {
   }
 });
 
+const addNewContacts = (data) => new Promise(function (res, rej) {
+
+  Promise.all(data.contacts.map((contact, i) => {
+    if (contact.contact_id === null) {
+      return postNewContact(contact.company_id, contact.address_id, contact.contact_name, contact.contact_position, contact.capacity_known, contact.reference, contact.date_known)
+        .then(contact => {
+          var contacts = data.contacts
+          contacts[i] = contact
+          data = { ...data, contacts: contacts }
+        })
+    }
+
+  }))
+    .then(() => res(data))
+
+  // if (data.contacts[0].contact_id === null) {
+  //   postNewContact(data.contacts[0].company_id, data.contacts[0].address_id, data.contacts[0].contact_name, data.contacts[0].contact_position, data.contacts[0].capacity_known, data.contacts[0].reference, data.contacts[0].date_known)
+  //   .then(contact => {
+  //     res({...data, contacts: [contact]})
+  //   })
+  // } else {
+  //   res(data)
+  // }
+
+})
+
 const addContact = (data) => new Promise(function (res, rej) {
   if (data.contact_id === null) {
     postNewContact(data.company_id, data.address_id, data.contact_name, data.contact_position, data.capacity_known, data.reference, data.date_known)
@@ -68,14 +94,14 @@ const addContactValue = (data) => new Promise(function (res, rej) {
 const addCorrespondence = (data) => new Promise(function (res, rej) {
   // if (data.correspondence_id === null) {
   postNewCorrespondence(data.contact_id, data.address_id, data.company_id, data.position_id)
-  .then(correspondence => {
-    correspondence.contact_values = data.contact_values.map((value, index) => {
-      value.correspondence_id = correspondence.correspondence_id
-      return value;
+    .then(correspondence => {
+      correspondence.contact_values = data.contact_values.map((value, index) => {
+        value.correspondence_id = correspondence.correspondence_id
+        return value;
+      })
+      return res({ ...data, ...correspondence });
     })
-    return res({ ...data, ...correspondence });
-  })
-    // .then(correspondence => res({ ...data, ...correspondence }))
+  // .then(correspondence => res({ ...data, ...correspondence }))
   // } else {
   //   return res(data)
   // }
@@ -144,7 +170,8 @@ function updateAdvertById(req, res, next) {
       })
     })
     .then(data => {
-      return res.status(200).send(data)})
+      return res.status(200).send(data)
+    })
     .catch((error) => {
       console.log(error)
       return next({ status: 400, error: error })
@@ -180,8 +207,8 @@ const updateAdvert = (data) => new Promise(function (res, rej) {
     .catch((error) => {
       console.log(error)
       return next({ status: 400, error: error })
-    
-    }) 
+
+    })
 
 })
 
@@ -233,11 +260,11 @@ function fetchLiveAdverts(req, res, next) {
 function fetchAdvertById(req, res, next) {
   getAdvertById(req.params.advert_id)
     .then(data => {
-      
+
       return res.status(200).send(data)
     })
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = {fetchAllAdvertsRaw, updateCorrespondence, updateAdvert, updatePosition, addCorrespondence, addNewAdvert, addProfession, addCompany, addAddress, addContact, addPosition, addAdvert, addContactValue, fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById };
+module.exports = { addNewContacts, fetchAllAdvertsRaw, updateCorrespondence, updateAdvert, updatePosition, addCorrespondence, addNewAdvert, addProfession, addCompany, addAddress, addContact, addPosition, addAdvert, addContactValue, fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById };
 

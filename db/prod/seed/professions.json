@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "profession_id": 1,
+        "profession": "Administration",
+        "profession_profile": ""
+    },
+    {
+        "profession_id": 2,
+        "profession": "Data Administration",
+        "profession_profile": ""
+    }
+]

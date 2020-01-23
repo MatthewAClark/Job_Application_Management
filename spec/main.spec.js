@@ -14,7 +14,7 @@ const app = require('../server');
 
 // const {getAllApplications} = require ('../models/db.applications');
 
-const {professions} = require('./models/professions.spec');
+const {occupations} = require('./models/occupations.spec');
 const {positions} = require('./models/positions.spec');
 const {companies} = require('./models/companies.spec');
 const {addresses} = require('./models/addresses.spec');
@@ -25,7 +25,7 @@ const {skill} = require('./models/skills.spec')
 
 const {controlleradverts} = require('./controllers/adverts.spec')
 
-describe('professions test', () => professions());
+describe.only('occupations test', () => occupations());
 describe('positions test', () => positions());
 describe('companies test', () => companies());
 describe('addresses test', () => addresses());
@@ -33,7 +33,7 @@ describe('contacts test', () => contacts());
 describe('correspondence test', () => correspondence());
 describe('advert test', () => advert());
 describe('advert controller test', () => controlleradverts());
-describe.only('skills model test', () => skill());
+describe('skills model test', () => skill());
 
 
 // describe('Adverts', () => {
@@ -241,15 +241,15 @@ describe.only('skills model test', () => skill());
 //     });
 
 //     // This is how the front end will work when adding an advert to the database
-//     it('Fetches list of professions from our db', () => {
-//       const professions = get.professions;
+//     it('Fetches list of occupations from our db', () => {
+//       const occupations = get.occupations;
 //       return request(app) // run mock server
-//         .get('/api/professions/list')
+//         .get('/api/occupations/list')
 //         .expect(200)
 //         .then(res => {
 //           expect(res.body).to.be.an('array')
 //           expect(res.body.length).to.equal(1);
-//           expect(res.body[0].profession).to.equal(professions.profession);
+//           expect(res.body[0].profession).to.equal(occupations.profession);
 //           expect(res.body[0].profession_profile).to.equal(undefined);
 //         });
 //     });
@@ -281,19 +281,19 @@ describe.only('skills model test', () => skill());
 //   })
 
 //   describe('POSTS', () => {
-//     it('posts profession to the professions table', () => {
-//       const professions = post.professions
+//     it('posts profession to the occupations table', () => {
+//       const occupations = post.occupations
 //        // runs mock server
 //        return request(app)
 //        //get request to mock server
-//        .post('/api/professions/')
-//        .send(professions)
+//        .post('/api/occupations/')
+//        .send(occupations)
 //        // supertest expect  - key on promise object
 //        .expect(201)
 //        .then(res => {
 //          // chai expect
 //          expect(res.body).to.be.an('object');
-//          expect(res.body.profession).to.equal(professions.profession);
+//          expect(res.body.profession).to.equal(occupations.profession);
 
 //        });
 

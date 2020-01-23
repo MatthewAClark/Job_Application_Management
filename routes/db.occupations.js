@@ -3,11 +3,11 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchProfessionList, fetchProfessions} = require('../controllers/db.professions');
+const {fetchOccupationList, fetchOccupations} = require('../controllers/db.occupations');
 
- router.get('/', fetchProfessions);
+ router.get('/', fetchOccupations);
 
- router.get('/list', fetchProfessionList);
+ router.get('/list', fetchOccupationList);
 
 // router.get('/:company_id', fetchCompanyById)
 

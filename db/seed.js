@@ -88,7 +88,6 @@ Promise.all(professions.map(elem => {
             Promise.all(contacts.map(elem => {
               return (new Promise(function (res) {
                 // console.log(elem)
-                console.log('contacts')
                 res(seedNewContact(elem.contact_id, elem.company_id, elem.address_id, elem.contact_name, elem.contact_position, elem.capacity_known, elem.reference, elem.date_known, elem.live))
 
               }));

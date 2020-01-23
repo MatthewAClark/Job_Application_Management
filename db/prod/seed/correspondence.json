@@ -1,1 +1,23 @@
-[]
+[
+    {
+        "correspondence_id": 1,
+        "contact_id": null,
+        "address_id": null,
+        "company_id": 1,
+        "position_id": 1
+    },
+    {
+        "correspondence_id": 2,
+        "contact_id": null,
+        "address_id": 1,
+        "company_id": 2,
+        "position_id": 2
+    },
+    {
+        "correspondence_id": 3,
+        "contact_id": null,
+        "address_id": null,
+        "company_id": 3,
+        "position_id": 3
+    }
+]

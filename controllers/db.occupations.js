@@ -1,5 +1,5 @@
 
-const { getProfessionList, getProfessions } = require('../models/db.professions');
+const { getOccupationList, getOccupations } = require('../models/db.occupations');
 
 
 
@@ -32,17 +32,17 @@ const { getProfessionList, getProfessions } = require('../models/db.professions'
 //     .catch((error) => next({ status: 404, error: error }));
 // }
 
-function fetchProfessionList(req, res, next) {
-  getProfessionList()
+function fetchOccupationList(req, res, next) {
+  getOccupationList()
     .then(data => res.status(200).send(data))
     .catch((error) => next({ status: 404, error: error }));
 }
 
-function fetchProfessions(req, res, next) {
-  getProfessions()
+function fetchOccupations(req, res, next) {
+  getOccupations()
     .then(data => res.status(200).send(data))
     .catch((error) => next({ status: 404, error: error }));
 }
 
-module.exports = {fetchProfessions, fetchProfessionList};
+module.exports = {fetchOccupations, fetchOccupationList};
 

@@ -3,11 +3,11 @@ CREATE DATABASE career_management_test;
 
 \c career_management_test;
 
-CREATE TABLE professions
+CREATE TABLE occupations
 (
-    profession_id SERIAL PRIMARY KEY,
-    profession VARCHAR(50),
-    profession_profile VARCHAR(1000)
+    occupation_id SERIAL PRIMARY KEY,
+    occupation VARCHAR(50),
+    occupation_profile VARCHAR(1000)
 );
 
 CREATE TABLE companies
@@ -47,9 +47,9 @@ CREATE TABLE contacts
 CREATE TABLE positions
 (
     position_id SERIAL PRIMARY KEY,
-    profession_id INT,
+    occupation_id INT,
     position_title VARCHAR(100),
-    FOREIGN KEY (profession_id) REFERENCES professions(profession_id)
+    FOREIGN KEY (occupation_id) REFERENCES occupations(occupation_id)
 );
 
 CREATE TABLE correspondence
@@ -211,10 +211,10 @@ CREATE TABLE education
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),
     FOREIGN KEY (skill_id) REFERENCES skills(skill_id)
 );
--- CREATE TABLE professions (
---     profession_id SERIAL PRIMARY KEY,
---     profession_name VARCHAR(30),
---     profession_summary VARCHAR(500)
+-- CREATE TABLE occupations (
+--     occupation_id SERIAL PRIMARY KEY,
+--     occupation_name VARCHAR(30),
+--     occupation_summary VARCHAR(500)
 -- );
 
 -- CREATE TABLE cvs (
@@ -225,13 +225,13 @@ CREATE TABLE education
 --     application_id SERIAL PRIMARY KEY,
 --     company_id INT,
 --     advert_id INT,
---     profession_id INT,
+--     occupation_id INT,
 --     cv_id INT,
 --     cover_letter VARCHAR(5000),
 --     date_applied DATE,
 --     pending BOOLEAN,
 --     FOREIGN KEY (advert_id) REFERENCES adverts(advert_id),
---     FOREIGN KEY (profession_id) REFERENCES professions(profession_id),
+--     FOREIGN KEY (occupation_id) REFERENCES occupations(occupation_id),
 --     FOREIGN KEY (cv_id) REFERENCES cvs(cv_id),
 --     FOREIGN KEY (company_id) REFERENCES companies(company_id)
 -- );
@@ -269,12 +269,12 @@ CREATE TABLE education
 -- VALUES(1, 'mobile', '0712345689'),
 --     (1, 'email', 'bob.geldoff@idontlikemondays.boomtown.com');
 
-INSERT INTO professions
-    (profession)
-VALUES('finance'),('administration'),('Marketing'),('Scientist'),('Software Development');
+INSERT INTO occupations
+    (occupation, occupation_profile)
+VALUES('finance',''),('administration','A fine member of the administration team, I would make an excellent candidate'),('Marketing',''),('Scientist',''),('Software Development','');
 
 INSERT INTO positions
-    (profession_id, position_title)
+    (occupation_id, position_title)
 VALUES(1, 'Senior VAT Officer'),(2, 'Office Administrator'),(3,'Marketing Assistant'),(4,'Scientist - Urban Modelling'),(5,'Junior Developers'),(5, 'Software Developer'),(4,'Climate Scientist (Decadal Prediction)');
 
 INSERT INTO companies
