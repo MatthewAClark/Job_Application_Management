@@ -1,10 +1,10 @@
 
 const { postNewAdvert, getAllAdverts, getLiveAdverts, getAdvertById, putAdvertById } = require('../models/db.adverts');
 const { postNewPosition, putPositionById } = require('../models/db.positions');
-const { postNewCorrespondence, putCorrespondenceById, getAllCorrespondence } = require('../models/db.correspondence');
+const { postNewCorrespondence, putCorrespondenceById, getAllPosition_contacts } = require('../models/db.position_contacts');
 
-function fetchAllCorrespondence(req, res, next) {
-  getAllCorrespondence()
+function fetchAllPositionContacts(req, res, next) {
+  getAllPosition_contacts()
     .then(data => res.status(200).send(data))
     .catch((error) => next({ status: 404, error: error }));
 }
@@ -70,5 +70,5 @@ function fetchAllCorrespondence(req, res, next) {
 //     .catch((error) => next({ status: 404, error: error }))
 // }
 
-module.exports = { fetchAllCorrespondence };
+module.exports = { fetchAllPositionContacts };
 

@@ -3,9 +3,9 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchAllCorrespondence} = require('../controllers/db.correspondence');
+const {fetchAllPositionContacts} = require('../controllers/db.position_contacts');
 
- router.get('/', fetchAllCorrespondence);
+ router.get('/', fetchAllPositionContacts);
 
 //  router.get('/live', fetchLiveAdverts);
 

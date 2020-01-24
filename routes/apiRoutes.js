@@ -5,7 +5,7 @@ const addresses = require('./db.addresses');
 const contacts = require('./db.contacts');
 const occupations = require('./db.occupations');
 const positions = require('./db.positions');
-const correspondence = require('./db.correspondence');
+const position_contacts = require('./db.position_contacts');
 
 const express  = require('express');
 const router = express.Router();
@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.use(express.static('public/api'));
 
-router.use('/correspondence', correspondence)
+router.use('/position_contacts', position_contacts)
 
 router.use('/adverts', adverts);
 

@@ -1,7 +1,7 @@
 
 const { postNewAdvert, getAllAdvertsRaw, getAllAdverts, getLiveAdverts, getAdvertById, putAdvertById } = require('../models/db.adverts');
 const { postNewPosition, putPositionById } = require('../models/db.positions');
-const { postNewCorrespondence, putCorrespondenceById } = require('../models/db.correspondence');
+const { postNewPosition_contact, putPosition_contactById } = require('../models/db.position_contacts');
 
 const { postNewContact, postContactValue } = require('../models/db.contacts');
 const { postNewAddress } = require('../models/db.addresses');
@@ -93,7 +93,7 @@ const addContactValue = (data) => new Promise(function (res, rej) {
 
 const addCorrespondence = (data) => new Promise(function (res, rej) {
   // if (data.correspondence_id === null) {
-  postNewCorrespondence(data.contact_id, data.address_id, data.company_id, data.position_id)
+  postNewPosition_contact(data.contact_id, data.address_id, data.company_id, data.position_id)
     .then(correspondence => {
       correspondence.contact_values = data.contact_values.map((value, index) => {
         value.correspondence_id = correspondence.correspondence_id
@@ -143,7 +143,7 @@ function addNewAdvert(req, res, next) {
 
   // postNewPosition(req.body.profession_id)
   //   .then(position => {
-  //     postNewCorrespondence(req.body.contact_id, req.body.address_id, req.body.company_id, position.position_id)
+  //     postNewPosition_contact(req.body.contact_id, req.body.address_id, req.body.company_id, position.position_id)
   //       .then(correspondence => {
   //         postNewAdvert(position.position_id, correspondence.correspondence_id, req.body.job_title, req.body.advert_ref, req.body.contract_type, req.body.full_time_part_time, req.body.date_posted, date, req.body.closing_date, req.body.website, req.body.min_salary, req.body.max_salary, req.body.advert_description, req.body.agency, req.body.job_board, req.body.voluntary, req.body.job_location)
   //           .then(data => res.status(201).send(data))
@@ -181,7 +181,7 @@ function updateAdvertById(req, res, next) {
 
   // postNewPosition(req.body.profession_id)
   //   .then(position => {
-  //     postNewCorrespondence(req.body.contact_id, req.body.address_id, req.body.company_id, position.position_id)
+  //     postNewPosition_contact(req.body.contact_id, req.body.address_id, req.body.company_id, position.position_id)
   //       .then(correspondence => {
   //         postNewAdvert(position.position_id, correspondence.correspondence_id, req.body.job_title, req.body.advert_ref, req.body.contract_type, req.body.full_time_part_time, req.body.date_posted, date, req.body.closing_date, req.body.website, req.body.min_salary, req.body.max_salary, req.body.advert_description, req.body.agency, req.body.job_board, req.body.voluntary, req.body.job_location)
   //           .then(data => res.status(201).send(data))
@@ -213,7 +213,7 @@ const updateAdvert = (data) => new Promise(function (res, rej) {
 })
 
 const updateCorrespondence = (data) => new Promise(function (res, rej) {
-  putCorrespondenceById(data.correspondence_id, data.contact_id, data.address_id, data.company_id)
+  putPosition_contactById(data.correspondence_id, data.contact_id, data.address_id, data.company_id)
     .then(correspondence => res({ ...data, ...correspondence }))
 
 });
@@ -223,7 +223,7 @@ const updateCorrespondence = (data) => new Promise(function (res, rej) {
 
 //   // putPositionById(req.body.position_id, req.body.profession_id)
 //   //   .then(position => {
-//   //     putCorrespondenceById(req.body.correspondence_id, req.body.contact_id, req.body.address_id, req.body.company_id)
+//   //     putPosition_contactById(req.body.correspondence_id, req.body.contact_id, req.body.address_id, req.body.company_id)
 //   //   })
 //   //   .then(correspondence => {
 //   putAdvertById(req.params.advert_id, req.body.job_title, req.body.advert_ref, req.body.contract_type, req.body.full_time_part_time, req.body.date_posted, req.body.closing_date, req.body.live, req.body.advert_url, req.body.min_salary, req.body.max_salary, req.body.advert_description, req.body.agency, req.body.job_board, req.body.voluntary, req.body.job_location, req.body.applied)

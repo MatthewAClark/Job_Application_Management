@@ -7,12 +7,12 @@ const { expect } = require('chai');
 const app = require('../../server');
 
 // Import required model components
-const { postNewCorrespondence } = require('../../models/db.correspondence');
+const { getAllPosition_contacts, postNewPosition_contact } = require('../../models/db.position_contacts');
 // const { getAllAdverts, getLiveAdverts, postNewAdvert, getAdvertById, putAdvertById } = require('../models/db.adverts');
 
 // const {getAllApplications} = require ('../models/db.applications');
 
-const correspondence = () => {
+const position_contacts = () => {
   describe('Model testing', () => {
     describe('contacts table', () => {
   //     it('../models/contacts, gets all contacts', () => {
@@ -42,15 +42,23 @@ const correspondence = () => {
       //     })
       // })
 
-      it('../models/contacts, Adds a new contact', () => {
-        return postNewCorrespondence(1,1,1,1)
+      it('../models/position_contacts, Gets all position contact', () => {
+        return postNewPosition_contact(1,1)
           .then(result => {
             expect(result).to.be.an('object');
-            expect(result.address_id).to.equal(1);
-             expect(result.company_id).to.equal(1);
              expect(result.contact_id).to.equal(1);
             expect(result.position_id).to.equal(1);
-            expect(result.correspondence_id).to.equal(8)
+            expect(result.position_contact_id).to.equal(8)
+          })
+      })
+
+      it('../models/position_contacts, Adds a new contact', () => {
+        return getAllPosition_contacts()
+          .then(result => {
+            expect(result).to.be.an('array');
+             expect(result[0].contact_id).to.equal(1);
+            expect(result[0].position_id).to.equal(1);
+            expect(result[0].position_contact_id).to.equal(1)
           })
       })
 
@@ -70,7 +78,7 @@ const correspondence = () => {
   })
 }
 
-module.exports = { correspondence }
+module.exports = { position_contacts }
 
 
 
