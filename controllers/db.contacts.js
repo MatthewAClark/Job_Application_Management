@@ -8,7 +8,7 @@ function addNewContact(req, res, next) {
 
 
   // Add new company address into db
-  postNewContact(req.body.company_id, req.body.address_id, req.body.contact_name, req.body.contact_position, req.body.capacity_known, req.body.reference, req.body.date_known)
+  postNewContact(req.body.address_id, req.body.contact_name, req.body.contact_position, req.body.capacity_known, req.body.reference, req.body.date_known)
 
     .then(data => res.status(201).send(
       data))

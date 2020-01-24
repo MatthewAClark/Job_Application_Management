@@ -32,7 +32,6 @@ CREATE TABLE addresses
 CREATE TABLE contacts
 (
     contact_id SERIAL PRIMARY KEY,
-    company_id INT,
     address_id INT,
     contact_name VARCHAR(30),
     contact_position VARCHAR(30),
@@ -40,7 +39,6 @@ CREATE TABLE contacts
     reference BOOLEAN,
     date_known DATE,
     live BOOLEAN,
-    FOREIGN KEY (company_id) REFERENCES companies(company_id),
     FOREIGN KEY (address_id) REFERENCES addresses(address_id)
 );
 
@@ -48,7 +46,6 @@ CREATE TABLE positions
 (
     position_id SERIAL PRIMARY KEY,
     occupation_id INT,
-    position_title VARCHAR(100),
     FOREIGN KEY (occupation_id) REFERENCES occupations(occupation_id)
 );
 
@@ -273,9 +270,13 @@ INSERT INTO occupations
     (occupation, occupation_profile)
 VALUES('finance',''),('administration','A fine member of the administration team, I would make an excellent candidate'),('Marketing',''),('Scientist',''),('Software Development','');
 
+-- INSERT INTO positions
+--     (occupation_id)
+-- VALUES(1, 'Senior VAT Officer'),(2, 'Office Administrator'),(3,'Marketing Assistant'),(4,'Scientist - Urban Modelling'),(5,'Junior Developers'),(5, 'Software Developer'),(4,'Climate Scientist (Decadal Prediction)');
+
 INSERT INTO positions
-    (occupation_id, position_title)
-VALUES(1, 'Senior VAT Officer'),(2, 'Office Administrator'),(3,'Marketing Assistant'),(4,'Scientist - Urban Modelling'),(5,'Junior Developers'),(5, 'Software Developer'),(4,'Climate Scientist (Decadal Prediction)');
+    (occupation_id)
+VALUES(1),(2),(3),(4),(5),(5),(4);
 
 INSERT INTO companies
     (company_name)
@@ -284,11 +285,11 @@ VALUES('Devon County Council'),('Plumbing Company'),('PPP Taking Care'),('Met Of
 INSERT INTO addresses
     (company_id, address_field, postcode, live)
 
-VALUES(1, 'Great Moor House\\nExeter\\nDevon','EX2 7NN', true),(2, 'Ground Floor Office\\n8 Sandpiper Court\nHarrington Lane\\nExeter','EX4 8NS', true),(3, 'Linhay House\\nLinhay Business Park\nAshburton \\n','TQ13 7UP', true),(4, 'Met Office\\nFitzRoy Road\\nExeter\\nDevon','EX1 3PB', true);
+VALUES(1, 'Great Moor House\nExeter\nDevon','EX2 7NN', true),(2, 'Ground Floor Office\\n8 Sandpiper Court\nHarrington Lane\\nExeter','EX4 8NS', true),(3, 'Linhay House\\nLinhay Business Park\nAshburton \\n','TQ13 7UP', true),(4, 'Met Office\\nFitzRoy Road\\nExeter\\nDevon','EX1 3PB', true);
 
 INSERT INTO contacts
-    (company_id, address_id, contact_name, contact_position, capacity_known, reference, date_known, live)
-VALUES(1,1,'Ray Rimes','','',false,null,true);
+    (address_id, contact_name, contact_position, capacity_known, reference, date_known, live)
+VALUES(1,'Ray Rimes','','',false,null,true);
 
 INSERT INTO correspondence(contact_id, address_id, company_id, position_id)
     VALUES(1,1,1,1),(null,2,2,2),(null,3,3,3),(null,4,4,4),(null,null,4,5),(null,4,4,6),(null,4,4,7);

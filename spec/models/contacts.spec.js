@@ -7,7 +7,7 @@ const { expect } = require('chai');
 const app = require('../../server');
 
 // Import required model components
-const { getAllContacts, getContactById, postNewContact } = require('../../models/db.contacts');
+const { seedNewContact, getAllContacts, getContactById, postNewContact } = require('../../models/db.contacts');
 // const { getAllAdverts, getLiveAdverts, postNewAdvert, getAdvertById, putAdvertById } = require('../models/db.adverts');
 
 // const {getAllApplications} = require ('../models/db.applications');
@@ -24,13 +24,22 @@ const contacts = () => {
           })
       })
 
-      it('../models/addresses, get address by ID', () => {
+      it('../models/contacts, get contact by ID', () => {
         return getContactById(1) 
           .then(result => {
             expect(result).to.be.an('array');
             expect(result[0].contact_id).to.equal(1)
             expect(result[0].contact_name).to.equal('Ray Rimes')
           })
+      })
+
+      it('../models/contacts, seeds a contact', () => {
+        return seedNewContact(3,1,'Fred Flintstone','Miner','Mr Slater',true,null,true)
+        .then(result => {
+          expect(result).to.be.an('object');
+          expect(result.contact_id).to.equal(3)
+              expect(result.contact_name).to.equal('Fred Flintstone')
+        })
       })
 
       //       it('../models/addresses, get live address by company ID', () => {
@@ -43,12 +52,11 @@ const contacts = () => {
       // })
 
       it('../models/contacts, Adds a new contact', () => {
-        return postNewContact(1,1,'Wilma Flintstone','House Wife','Fred',true,null)
+        return postNewContact(1,'Wilma Flintstone','House Wife','Fred',true,null)
           .then(result => {
             expect(result).to.be.an('object');
             expect(result.address_id).to.equal(1);
-             expect(result.company_id).to.equal(1);
-             expect(result.contact_id).to.equal(2);
+             expect(result.contact_id).to.be.an('number');
             expect(result.contact_name).to.equal('Wilma Flintstone');
           })
       })

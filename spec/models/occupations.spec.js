@@ -80,6 +80,7 @@ const occupations = () => {
         .get('/api/occupations/list')
         .expect(200)
         .then(result => {
+          
           expect(result.body).to.be.an('array');
           expect(result.body.length).to.equal(5);
           expect(result.body[0].occupation).to.equal('finance')

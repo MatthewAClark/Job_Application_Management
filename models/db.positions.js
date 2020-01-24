@@ -3,9 +3,9 @@ const db = require('../config/index.js');
 
 
 
-const postNewPosition = ( profession_id, position_title) => db.one('INSERT INTO positions (profession_id, position_title) VALUES ($1, $2) RETURNING *', [profession_id, position_title]);
+const postNewPosition = ( occupation_id) => db.one('INSERT INTO positions (occupation_id) VALUES ($1) RETURNING *', [occupation_id]);
 
-const seedNewPosition = ( position_id, profession_id, position_title) => db.one('INSERT INTO positions (position_id, profession_id, position_title) VALUES ($1, $2, $3) RETURNING *', [position_id, profession_id, position_title]);
+const seedNewPosition = ( position_id, occupation_id) => db.one('INSERT INTO positions (position_id, occupation_id) VALUES ($1, $2) RETURNING *', [position_id, occupation_id]);
 
 const getAllPositions = () => db.manyOrNone('SELECT * FROM positions');
     
@@ -16,7 +16,7 @@ const getAllPositions = () => db.manyOrNone('SELECT * FROM positions');
 
 // const getLiveAdverts = () => db.manyOrNone('SELECT * FROM adverts FULL JOIN companies ON adverts.company_id=companies.company_id WHERE adverts.live=true');
 
-const putPositionById = (position_id, profession_id, position_title) => {
-    return db.one('UPDATE positions SET profession_id=$1, position_title=$2 WHERE position_id=$3 RETURNING *', [profession_id, position_title, position_id]);
+const putPositionById = (position_id, occupation_id) => {
+    return db.one('UPDATE positions SET occupation_id=$1 WHERE position_id=$2 RETURNING *', [occupation_id, position_id]);
 }
 module.exports = {seedNewPosition, getAllPositions, postNewPosition, putPositionById};

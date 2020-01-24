@@ -25,8 +25,8 @@ const {skill} = require('./models/skills.spec')
 
 const {controlleradverts} = require('./controllers/adverts.spec')
 
-describe.only('occupations test', () => occupations());
-describe('positions test', () => positions());
+describe('occupations test', () => occupations());
+describe.only('positions test', () => positions());
 describe('companies test', () => companies());
 describe('addresses test', () => addresses());
 describe('contacts test', () => contacts());

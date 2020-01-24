@@ -128,7 +128,7 @@ const controlleradverts = () => {
 
       })
 
-      describe.only('addNewContacts', () => {
+      describe('addNewContacts', () => {
         it('../controllers/adverts, AddNewContact returns an object we give it with no contacts intact', () => {
           return addNewContacts({
             contacts: [{contact_id: undefined}],
@@ -172,7 +172,7 @@ const controlleradverts = () => {
             })
         })
 
-        it.only('../controllers/adverts, AddNewContact - adds multiple contacts when contact_id=null', () => {
+        it('../controllers/adverts, AddNewContact - adds multiple contacts when contact_id=null', () => {
           return addNewContacts({
             contacts: [{
               contact_id: null,
@@ -205,7 +205,7 @@ const controlleradverts = () => {
         })
 
 
-        it.only('../controllers/adverts, AddNewContact - only adds contact when contact_id is null', () => {
+        it('../controllers/adverts, AddNewContact - only adds contact when contact_id is null', () => {
           return addNewContacts({
             contacts: [{
               contact_id: 1,

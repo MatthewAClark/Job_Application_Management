@@ -20,8 +20,7 @@ const positions = () => {
           .then(result => {
             expect(result).to.be.an('array');
             expect(result.length).to.equal(7);
-            expect(result[0].position_title).to.equal('Senior VAT Officer')
-            expect(result[0].profession_id).to.equal(1)
+            expect(result[0].occupation_id).to.equal(1)
           })
       })
 
@@ -30,17 +29,16 @@ const positions = () => {
           .then(result => {
             expect(result).to.be.an('object');
             expect(result.position_id).to.equal(8);
-            expect(result.position_title).to.equal('Junior Software Developer');
+            expect(result.occupation_id).to.equal(5);
           })
       })
 
       it('../models/positions, Updates a position', () => {
-        return putPositionById(1, 1,'Junior VAT Officer')
+        return putPositionById(1, 2)
         .then(result => {
           expect(result).to.be.an('object');
           expect(result.position_id).to.equal(1)
-          expect(result.profession_id).to.equal(1)
-          expect(result.position_title).to.equal('Junior VAT Officer')
+          expect(result.occupation_id).to.equal(2)
         })
       })
 
