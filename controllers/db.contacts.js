@@ -1,5 +1,5 @@
 
-const { getContactById, getContactValues, getContactValuesById, getAllContacts, getContactsByCompanyId, postNewContact, getContactsByAddressId, getContactsByCompanyAndAddressId, postContactValue } = require('../models/db.contacts');
+const { getContactById, getAllContactMethods, getContactMethodsById, getAllContacts, getContactsByCompanyId, postNewContact, getContactsByAddressId, getContactsByCompanyAndAddressId, postContactMethod } = require('../models/db.contacts');
 
 
 
@@ -19,10 +19,10 @@ function addNewContact(req, res, next) {
     });
 }
 
-function addContactValue(req, res, next) {
+function addContactMethod(req, res, next) {
 
   // Add new company address into db
-  postContactValue(req.body.contact_id, req.body.contact_type, req.body.contact_value)
+  postContactMethod(req.body.contact_id, req.body.contact_method, req.body.contact_value)
 
     .then(data => res.status(201).send(
       data))
@@ -33,8 +33,8 @@ function addContactValue(req, res, next) {
     });
 }
 
-function fetchContactValues(req, res, next) {
-  getContactValues()
+function fetchAllContactMethods(req, res, next) {
+  getAllContactMethods()
   .then(data => res.status(200).send(data))
     .catch((error) => next({ status: 404, error: error }))
 }
@@ -63,8 +63,8 @@ function fetchContactsByCompanyAndAddressId(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-function fetchContactValuesById(req, res, next) {
-  getContactValuesById(req.params.contact_id)
+function fetchContactMethodsById(req, res, next) {
+  getContactMethodsById(req.params.contact_id)
     .then(data => res.status(200).send(data))
     .catch((error) => next({ status: 404, error: error }))
 }
@@ -95,5 +95,5 @@ function fetchContacts(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = {fetchContactValues, fetchContactById, fetchContactValuesById, fetchAllContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, fetchContacts, addContactValue };
+module.exports = {fetchAllContactMethods, fetchContactById, fetchContactMethodsById, fetchAllContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, fetchContacts, addContactMethod };
 
