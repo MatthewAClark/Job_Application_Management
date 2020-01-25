@@ -3,15 +3,13 @@ const db = require('../config/index.js');
 
 
 
-const postNewAdvert = ( company_name, job_title, advert_ref, contract_type, full_time_part_time, date_posted, date_seen, closing_date, website, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location) => db.one('INSERT INTO adverts (company_name, job_title, advert_ref, contract_type, full_time_part_time, date_posted, date_seen, closing_date, live, website, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *', [company_name, job_title, advert_ref, contract_type, full_time_part_time, date_posted, date_seen, closing_date, true, website, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location]);
+const postNewApplication = ( address_id, position_id, advert_id, company_id, cv_id, cover_letter, applied, date_applied) => db.one('INSERT INTO applications (address_id, position_id, advert_id, company_id, cv_id, cover_letter, applied, date_applied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *', [address_id, position_id, advert_id, company_id, cv_id, cover_letter, applied, date_applied]);
     
         
 const getAllApplications = () => db.manyOrNone('SELECT * FROM applications');
 
-const getAdvertById = (advert_id) => db.oneOrNone('SELECT * FROM adverts WHERE advert_id=$1', [advert_id]);
+const getApplicationById = (application_id) => db.oneOrNone('SELECT * FROM applications WHERE application_id=$1', [application_id]);
 
-const getLiveAdverts = () => db.manyOrNone('SELECT * FROM adverts WHERE live=true');
+const putApplicationById = (application_id, address_id, company_id, cv_id, cover_letter, applied, date_applied) => db.one('UPDATE applications SET address_id=$1, company_id=$2, cv_id=$3, cover_letter=$4, applied=$5, date_applied=$6 WHERE application_id=$7 RETURNING *', [address_id, company_id, cv_id, cover_letter, applied, date_applied, application_id])
 
-const putAdvertById = (advert_id, company_name, job_title, advert_ref, contract_type, full_time_part_time, date_posted, closing_date, live, website, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location) => db.one('UPDATE adverts SET company_name=$1, job_title=$2, advert_ref=$3, contract_type=$4, full_time_part_time=$5, date_posted=$6, closing_date=$7, live=$8, website=$9, min_salary=$10, max_salary=$11, advert_description=$12, agency=$13, job_board=$14, voluntary=$15, job_location=$16 WHERE advert_id=$17 RETURNING *', [company_name, job_title, advert_ref, contract_type, full_time_part_time, date_posted, closing_date, live, website, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location, advert_id])
-
-module.exports = {postNewAdvert, getAllApplications, getLiveAdverts, getAdvertById, putAdvertById};
+module.exports = {postNewApplication, getAllApplications, getApplicationById, putApplicationById};

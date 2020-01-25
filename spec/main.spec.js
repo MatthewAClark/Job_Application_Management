@@ -15,24 +15,24 @@ const app = require('../server');
 // const {getAllApplications} = require ('../models/db.applications');
 
 const {occupations} = require('./models/occupations.spec');
-const {positions} = require('./models/positions.spec');
+// const {positions} = require('./models/positions.spec');
 const {companies} = require('./models/companies.spec');
 const {addresses} = require('./models/addresses.spec');
 const {contacts} = require('./models/contacts.spec');
-const {position_contacts} = require('./models/position_contacts.spec');
-const {advert} = require('./models/advert.spec');
+// const {position_contacts} = require('./models/position_contacts.spec');
+const {adverts} = require('./models/adverts.spec');
 const {skill} = require('./models/skills.spec');
 const {applications} = require('./models/applications.spec');
 
 const {controlleradverts} = require('./controllers/adverts.spec')
 
 describe('occupations test', () => occupations());
-describe('positions test', () => positions());
+// describe('positions test', () => positions());
 describe('companies test', () => companies());
 describe('addresses test', () => addresses());
 describe('contacts test', () => contacts());
-describe('position_contacts test', () => position_contacts());
-describe('advert test', () => advert());
+// describe('position_contacts test', () => position_contacts());
+describe.only('advert test', () => adverts());
 describe('advert controller test', () => controlleradverts());
 describe('skills model test', () => skill());
 describe('applications test', () => applications());

@@ -59,7 +59,7 @@ const contacts = () => {
 
     })
 
-    describe.only('contact_methods table', () => {
+    describe('contact_methods table', () => {
       it('../models/contact_methods, gets all contact_methods', () => {
         return getAllContactMethods()
           .then(result => {
