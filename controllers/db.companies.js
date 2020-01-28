@@ -1,5 +1,5 @@
 
-const { getCompanyById, getAllCompanies, getCompanyList, postNewCompany} = require('../models/db.companies');
+const {putCompanyById, getCompanyById, getAllCompanies, getCompanyList, postNewCompany} = require('../models/db.companies');
 
 
 
@@ -32,5 +32,11 @@ function fetchCompanyById(req, res, next) {
     .catch((error) => next({ status: 404, error: error }));
 }
 
-module.exports = { fetchCompanyById, addNewCompany, fetchCompanyList, fetchAllCompanies};
+function updateCompanyById(req, res, next) {
+  putCompanyById(req.params.company_id, req.body.company_name, req.body.sector, req.body.industry, req.body.website)
+  .then(data => res.status(200).send(data))
+    .catch((error) => next({ status: 404, error: error }));
+}
+
+module.exports = {updateCompanyById, fetchCompanyById, addNewCompany, fetchCompanyList, fetchAllCompanies};
 

@@ -3,7 +3,7 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchCompanyById, fetchAllCompanies, fetchCompanyList, addNewCompany} = require('../controllers/db.companies');
+const {updateCompanyById, fetchCompanyById, fetchAllCompanies, fetchCompanyList, addNewCompany} = require('../controllers/db.companies');
 
  router.get('/', fetchAllCompanies);
 
@@ -12,6 +12,8 @@ const {fetchCompanyById, fetchAllCompanies, fetchCompanyList, addNewCompany} = r
 router.get('/:company_id', fetchCompanyById)
 
 router.post('/', addNewCompany);
+
+router.put('/:company_id', updateCompanyById);
 
 
 

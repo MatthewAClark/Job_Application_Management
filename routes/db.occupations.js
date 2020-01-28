@@ -3,7 +3,7 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchOccupationList, fetchOccupations} = require('../controllers/db.occupations');
+const {updateOccupationById, addNewOccupation, fetchOccupationList, fetchOccupations} = require('../controllers/db.occupations');
 
  router.get('/', fetchOccupations);
 
@@ -11,7 +11,9 @@ const {fetchOccupationList, fetchOccupations} = require('../controllers/db.occup
 
 // router.get('/:company_id', fetchCompanyById)
 
-// router.post('/', addNewCompany);
+ router.post('/', addNewOccupation);
+
+ router.put('/:occupation_id', updateOccupationById)
 
 
 

@@ -1,5 +1,5 @@
 
-const {getAddressById, getAllAddresses, getLiveAddressesByCompanyId, postNewAddress, postNewCompanyAddress } = require('../models/db.addresses');
+const { putAddressById, getAddressById, getAllAddresses, getLiveAddressesByCompanyId, postNewAddress, postNewCompanyAddress } = require('../models/db.addresses');
 
 
 
@@ -9,10 +9,22 @@ function addNewCompanyAddress(req, res, next) {
 
   // Add new company address into db
   postNewAddress(req.body.company_id, req.body.address_field, req.body.postcode)
-   
-      .then(data => res.status(201).send(
+
+    .then(data => res.status(201).send(
       data))
-    
+
+    .catch((error) => {
+      console.log(error)
+      return next({ status: 400, error: error })
+    });
+}
+
+function updateAddressById(req, res, next) {
+  putAddressById(req.params.address_id, req.body.company_id, req.body.address_field, req.body.postcode)
+
+    .then(data => res.status(200).send(
+      data))
+
     .catch((error) => {
       console.log(error)
       return next({ status: 400, error: error })
@@ -38,5 +50,5 @@ function fetchAddressById(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = {fetchAddressById, fetchAllAddresses, addNewCompanyAddress, fetchLiveAddressesByCompanyId };
+module.exports = { updateAddressById, fetchAddressById, fetchAllAddresses, addNewCompanyAddress, fetchLiveAddressesByCompanyId };
 

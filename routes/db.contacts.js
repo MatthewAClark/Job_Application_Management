@@ -3,11 +3,11 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchAllContactMethods, fetchContactMethodsById, fetchContacts, addNewContact, fetchContactsByAddressId, addContactMethod} = require('../controllers/db.contacts');
+const {updateContactById, fetchAllContactMethods, fetchContactById, fetchContactMethodsById, fetchContacts, addNewContact, fetchContactsByAddressId, addContactMethod, fetchLiveContacts} = require('../controllers/db.contacts');
 
  router.get('/', fetchContacts);
 
-//  router.get('/contact/:contact_id', fetchContactById);
+ router.get('/contact/:contact_id', fetchContactById);
 
  router.get('/methods/:contact_id', fetchContactMethodsById);
 
@@ -17,11 +17,15 @@ const {fetchAllContactMethods, fetchContactMethodsById, fetchContacts, addNewCon
 
 router.get('/methods', fetchAllContactMethods)
 
+router.get('/live', fetchLiveContacts)
+
 //  router.put('/:advert_id', updateAdvertById)
 
 router.post('/', addNewContact);
 
 router.post('/:contact_id', addContactMethod);
+
+router.put('/:contact_id', updateContactById);
 
 
 

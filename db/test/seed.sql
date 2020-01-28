@@ -32,6 +32,7 @@ CREATE TABLE addresses
 CREATE TABLE contacts
 (
     contact_id SERIAL PRIMARY KEY,
+    company_id INT,
     address_id INT,
     contact_name VARCHAR(30),
     contact_position VARCHAR(30),
@@ -39,6 +40,7 @@ CREATE TABLE contacts
     reference BOOLEAN,
     date_known DATE,
     live BOOLEAN,
+    FOREIGN KEY (company_id) REFERENCES companies(company_id),
     FOREIGN KEY (address_id) REFERENCES addresses(address_id)
 );
 
@@ -123,9 +125,9 @@ CREATE TABLE skills
     description_short VARCHAR(500)
 );
 
-CREATE TABLE advert_experience
+
+CREATE TABLE requirements
 (
-    ad_experience_id SERIAL PRIMARY KEY,
     skill_id INT,
     advert_id INT,
     essential BOOLEAN,
@@ -275,11 +277,11 @@ VALUES('finance', ''),
 
 
 INSERT INTO companies
-    (company_name)
-VALUES('Devon County Council'),
-    ('Plumbing Company'),
-    ('PPP Taking Care'),
-    ('Met Office');
+    (company_name, sector, industry, website)
+VALUES('Devon County Council','public authority','government','www.devon.ac.uk'),
+    ('Plumbing Company','','',''),
+    ('PPP Taking Care','','',''),
+    ('Met Office','','','');
 
 INSERT INTO addresses
     (company_id, address_field, postcode, live)
@@ -290,8 +292,8 @@ VALUES(1, 'Great Moor House\nExeter\nDevon', 'EX2 7NN', true),
     (4, 'Met Office\\nFitzRoy Road\\nExeter\\nDevon', 'EX1 3PB', true);
 
 INSERT INTO contacts
-    (address_id, contact_name, contact_position, capacity_known, reference, date_known, live)
-VALUES(1, 'Ray Rimes', '', '', false, null, true);
+    (company_id, address_id, contact_name, contact_position, capacity_known, reference, date_known, live)
+VALUES(1, 1, 'Ray Rimes', '', '', false, null, true);
 
 
 
@@ -301,7 +303,7 @@ INSERT INTO adverts
 VALUES(
         1, 1, 1, 'Senior VAT Officer', 'REC/19/06732', 'permanent', 'full-time', null, '2019-12-20T00:00:00.000Z', '2020-01-15T00:00:00.000Z', true, 'https://www.devonjobs.gov.uk/finance-accounting-corporate-services-senior-vat-officer/66897.job', '£32,029', '35,934', 'The Tax Compliance Team is seeking to recruit a Senior VAT Officer, to provide support, advice and guidance to council services on all aspects of VAT compliance. An up to date knowledge of VAT legislation and practice is essential, ideally with local authority/public sector experience.\n\nThe key duties and responsibilities of the role include:\n\n\n·       Preparation and checking of VAT returns, and associated activity (such as complex partial exemption calculations);\n\n·       Interpretation of VAT regulations, providing robust advice and guidance on their implications for council services and schools;\n\n·       VAT compliance monitoring, dealing with adjustments and corrections in liaison with finance teams;\n\n·       Tax education and promotion across the council;\n\n·       Monitoring changes to VAT legislation and the potential impact on the Council;\n\n·       Playing an active role in developing the tax compliance service, reducing risk whilst pursuing savings and tax efficiency.\n\nWe are looking for an individual with a sound understanding of the application of VAT regulations to complex scenarios, who can deal confidently with a wide range of customers at all levels within the organisation. They will be well-organised and self-motivated, capable of providing a high-quality tax service to tight deadlines.\n\nThe post is full-time with a flexible work pattern over 5 days per week. Alternative working hours or patterns may be considered.\n\nThis role requires the ability to fulfil all spoken aspects of the role with confidence and fluency in English.\n\nPersonal data we collect from you will be processed in accordance with the Applicant privacy notice.\n\nFor more information about Working for Devon please visit our Working for Devon page.', false, '', false, 'Exeter'),
 
-        (2, 2, 2, 'Office Administrator', '', '', 'full-time', '2019-12-18T00:00:00.000Z', '2019-12-20T00:00:00.000Z', null, true, 'https://www.indeed.co.uk/jobs?q&l=exeter&advn=455972492952954&vjk=a90385efdf8d3e1d', '£18,000', '£18,000', 'This is an exciting opportunity for an experienced Administrator to join a growing forward-thinking plumbing and heating business based in Exeter. As Office Administrator you will be service led with strong administration skills and the ability to multi-task effectively. You will support the Office Manager with the day-to-day administrative tasks. This will include dealing with enquiries from customers by telephone and email, booking engineer appointments into the company booking system, invoicing customers and providing quotations. This position would suit a candidate with a good eye for detail looking to work within a fast-paced office who enjoys a varied workload.\n\nKnowledge Required:\n\nPrevious experience of delivering a high level of customer service within a busy environment\nExperience in a role requiring a high level of organisational skills\nExperience of Microsoft Office\nSkills and attributes:\n\nProven organisational ability to a high standard\nAbility to switch between tasks as necessary\nAbility to communicate well with colleagues and customers\nPositive problem solving attitude\nHighly IT Literate\nExcellent telephone manner\nAbility to work independently\nTeam focused\nCustomer Service driven\nExcellent standard of literacy\nHours:\n\nMonday to Friday from 09:00 - 17:30\n\n28 days holiday inclusive of Bank Holidays\n\nJob Type: Full-time\n\nSalary: £18,000.00 /year\n\nJob Type: Full-time\n\nSalary: £18,000.00 /year\n\nExperience:\n\ncustomer service: 1 year (Preferred)\nLocation:\n\nExeter EX4 (Preferred)', false, '', false, 'Exeter'),
+        (2, 2, 2, 'Office Administrator', '', '', 'full-time', '2019-12-18T00:00:00.000Z', '2019-12-20T00:00:00.000Z', null, false, 'https://www.indeed.co.uk/jobs?q&l=exeter&advn=455972492952954&vjk=a90385efdf8d3e1d', '£18,000', '£18,000', 'This is an exciting opportunity for an experienced Administrator to join a growing forward-thinking plumbing and heating business based in Exeter. As Office Administrator you will be service led with strong administration skills and the ability to multi-task effectively. You will support the Office Manager with the day-to-day administrative tasks. This will include dealing with enquiries from customers by telephone and email, booking engineer appointments into the company booking system, invoicing customers and providing quotations. This position would suit a candidate with a good eye for detail looking to work within a fast-paced office who enjoys a varied workload.\n\nKnowledge Required:\n\nPrevious experience of delivering a high level of customer service within a busy environment\nExperience in a role requiring a high level of organisational skills\nExperience of Microsoft Office\nSkills and attributes:\n\nProven organisational ability to a high standard\nAbility to switch between tasks as necessary\nAbility to communicate well with colleagues and customers\nPositive problem solving attitude\nHighly IT Literate\nExcellent telephone manner\nAbility to work independently\nTeam focused\nCustomer Service driven\nExcellent standard of literacy\nHours:\n\nMonday to Friday from 09:00 - 17:30\n\n28 days holiday inclusive of Bank Holidays\n\nJob Type: Full-time\n\nSalary: £18,000.00 /year\n\nJob Type: Full-time\n\nSalary: £18,000.00 /year\n\nExperience:\n\ncustomer service: 1 year (Preferred)\nLocation:\n\nExeter EX4 (Preferred)', false, '', false, 'Exeter'),
 
         (3, 3, 3, 'Marketing Assistant', '', 'permanent', 'full-time', '2019-12-18T00:00:00.000Z', '2019-12-20T00:00:00.000Z', null, true, 'https://www.indeed.co.uk/jobs?q&l=exeter&advn=9071700039686278&vjk=517068aa4b163722', '£18,000', '£23,000', 'PPP Taking Care provides around the clock support to over 70,000 people. Telecare can help older adults and the vulnerable remain independent, safe in their home, and provide reassurance to their friends and family. We have 30 years of providing the Age UK personal alarm service and are the largest private pay telecare provider in the UK. As part of AXA PPP Healthcare we are developing exciting new services and technology to help people live in the homes they love for longer.\n\nWe are looking for an aspiring marketer who is very well organised and able to multi-task. You will help deliver consumer marketing activity across a range of channels.\n\nYou will need to be keen to learn and be comfortable using your initiative to challenge the status quo and be able to work alone or as part of a team. We will support you to make a real impact in a varied role within a new and growing team.\n\nThe successful candidate will help execute a range of marketing campaigns both on and offline, and help plan consumer and trade events and shows, and be part of them.\n\nYou will be responsible for the day to day management of the departmental priorities helping to organise the department’s workflow. You will need to be able to report on a weekly basis both digital and offline activity and use Google and other tools to gather and report business performance.\n\nWith attention to detail skills, you will help write copy and create campaigns and consumer material. You will assist in the production of customer communication. The candidate will be involved in website management using our CMS and help manage the eCommerce function.\n\nYou will need to be able to help manage assets in Adobe Creative Suite (InDesign, Photoshop & Illustrator).\n\nIt would be desirable if you had copywriting/SEO experience.\n\nEssential Skills required:\n\n· 1-2 years’ relevant experience, with a professional qualification relevant to the role.\n\n· Previous marketing experience\n\n· You will need to have proven experience of working extensively with words and numbers\n\n· Excellent interpersonal skills.\n\nBenefits:\n\n· 26 days’ paid annual leave plus Bank Holidays. The opportunity to purchase an additional week’s holiday.\n\n· Healthcare Cash Plan\n\n· Contributory pension plan\n\n· My Discounts – Access to online cash back, childcare vouchers, retail discounts and cycle to work schemes.\n\n· Life Assurance.\n\nSalary: £18,000 - £23,000 p.a. dependant on skills and experience. The role is full time, 35 hours per week.\n\nThe position will be based at our head office in Pynes Hill in Exeter\n\nBenefits:\n\nLife insurance\nJob Types: Full-time, Permanent\n\nSalary: £18,000.00 to £23,000.00 /year\n\nExperience:\n\nrelevant experience with professional qualification: 1 year (Required)\nEducation:\n\nDiploma of Higher Education (Preferred)', false, '', false, 'Exeter'),
 
@@ -344,9 +346,9 @@ VALUES('Customer Service', 'Proven ability to handle all customer and support re
     ('NodeJS', '2 years experience in this too', ''),
     ('Administration', 'Proven experience working for years in NHS filing and prepping notes', '');
 
-INSERT INTO advert_experience
+INSERT INTO requirements
     (skill_id, advert_id, essential, duration, experience_description)
-VALUES(1, 1, true, 5, 'Needed to do this job');
+VALUES(1, 1, true, 5, 'Great customer service skills are needed for this job');
 
 -- INSERT INTO companies(company_name)
 -- VALUES('Talent Ticker');

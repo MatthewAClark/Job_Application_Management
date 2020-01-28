@@ -1,36 +1,27 @@
 
-const { getOccupationList, getOccupations } = require('../models/db.occupations');
+const { putOccupationById, postNewOccupation, getOccupationList, getOccupations } = require('../models/db.occupations');
 
 
 
-// function addNewCompany(req, res, next) {
+function addNewOccupation(req, res, next) {
 
 
-//   postNewCompany(req.body.company_name, req.body.sector, req.body.industry, req.body.website)
-//     .then(data => res.status(201).send(data))
-//     .catch((error) => {
+  postNewOccupation(req.body.occupation, req.body.occupation_profile)
+    .then(data => res.status(201).send(data))
+    .catch((error) => {
+      return next({ status: 400, error: error })
+    });
+}
 
-//       return next({ status: 400, error: error })
-//     });
-// }
+function updateOccupationById(req, res, next) {
 
-// function fetchAllCompanies(req, res, next) {
-//   getAllCompanies()
-//     .then(data => res.status(200).send(data))
-//     .catch((error) => next({ status: 404, error: error }));
-// }
 
-// function fetchCompanyList(req, res, next) {
-//   getCompanyList()
-//     .then(data => res.status(200).send(data))
-//     .catch((error) => next({ status: 404, error: error }));
-// }
-
-// function fetchCompanyById(req, res, next) {
-//   getCompanyById(req.params.company_id)
-//   .then(data => res.status(200).send(data))
-//     .catch((error) => next({ status: 404, error: error }));
-// }
+  putOccupationById(req.params.occupation_id, req.body.occupation, req.body.occupation_profile)
+    .then(data => res.status(200).send(data))
+    .catch((error) => {
+      return next({ status: 400, error: error })
+    });
+}
 
 function fetchOccupationList(req, res, next) {
   getOccupationList()
@@ -44,5 +35,5 @@ function fetchOccupations(req, res, next) {
     .catch((error) => next({ status: 404, error: error }));
 }
 
-module.exports = {fetchOccupations, fetchOccupationList};
+module.exports = { updateOccupationById, addNewOccupation, fetchOccupations, fetchOccupationList};
 
