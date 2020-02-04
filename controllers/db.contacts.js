@@ -131,5 +131,41 @@ function fetchLiveContacts(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = { updateContactById, fetchLiveContacts, fetchAllContactMethods, fetchContactById, fetchContactMethodsById, fetchAllContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, fetchContacts, addContactMethod };
+const addContacts = (data) => new Promise(function (res, rej) {
+
+  Promise.all(data.contacts.map((contact, i) => {
+    if (contact.contact_id === null) {
+      return postNewContact(contact.company_id, contact.address_id, contact.contact_name, contact.contact_position, contact.capacity_known, contact.reference, contact.date_known)
+        .then(contact => {
+           var contacts = data.contacts
+           var contact_methods = data.contacts[i].contact_methods.map(method => {
+            return {...method, contact_id: contact.contact_id}
+          })
+          contacts[i] = {...contact, contact_methods: contact_methods}
+          data = { ...data, contacts: contacts }
+        })
+    }
+
+  }))
+    .then(() => res(data))
+})
+
+const addContactMethods = (contact) => new Promise(function (res, rej) {
+  Promise.all(contact.contact_methods.map((method, i) => {
+    if (method.method_id === null) {
+      return postContactMethod(method.contact_id, method.contact_method, method.contact_value)
+        .then(method => {
+          var methods = contact.contact_methods
+          methods[i] = method
+          contact = { ...contact, contact_methods: methods }
+        })
+    }
+
+  }))
+    .then(() => res(contact))
+
+
+})
+
+module.exports = { updateContactById, fetchLiveContacts, fetchAllContactMethods, fetchContactById, fetchContactMethodsById, fetchAllContacts, fetchContactsByCompanyId, addNewContact, fetchContactsByAddressId, fetchContactsByCompanyAndAddressId, fetchContacts, addContactMethod, addContacts, addContactMethods };
 

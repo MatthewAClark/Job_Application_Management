@@ -38,5 +38,14 @@ function updateCompanyById(req, res, next) {
     .catch((error) => next({ status: 404, error: error }));
 }
 
-module.exports = {updateCompanyById, fetchCompanyById, addNewCompany, fetchCompanyList, fetchAllCompanies};
+const addCompany = (data) => new Promise(function (res, rej) {
+  if (data.company_id === null) {
+    postNewCompany(data.company_name, data.sector, data.industry, data.website)
+      .then(company => res({ ...data, ...company }))
+  } else {
+    return res(data)
+  }
+})
+
+module.exports = {addCompany, updateCompanyById, fetchCompanyById, addNewCompany, fetchCompanyList, fetchAllCompanies};
 

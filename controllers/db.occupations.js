@@ -35,5 +35,15 @@ function fetchOccupations(req, res, next) {
     .catch((error) => next({ status: 404, error: error }));
 }
 
-module.exports = { updateOccupationById, addNewOccupation, fetchOccupations, fetchOccupationList};
+
+const addOccupation = (data) => new Promise(function (res, rej) {
+  if (data.occupation_id === null) {
+    postNewOccupation(data.occupation, data.occupation_profile)
+      .then(occupation => res({ ...data, ...occupation }))
+  } else {
+    return res(data)
+  }
+})
+
+module.exports = { updateOccupationById, addNewOccupation, addOccupation, fetchOccupations, fetchOccupationList};
 

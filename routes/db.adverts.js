@@ -15,9 +15,9 @@ const {fetchAllAdvertsRaw, addNewAdvert,  fetchAllAdverts, fetchLiveAdverts, fet
 
 router.put('/:advert_id', updateAdvertById)
 
-
-
 router.post('/', addNewAdvert);
+
+
 
 
 

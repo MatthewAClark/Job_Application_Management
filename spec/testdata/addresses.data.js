@@ -2,81 +2,35 @@ const { expect } = require('chai');
 
 const { getAddressById, getAllAddresses, getLiveAddressesByCompanyId, putAddressById, postNewAddress } = require('../../models/db.addresses');
 
-const getdata = {
-
-    getAddressById: {
-        address_id: 2
-    },
-    getLiveAddressesByCompanyId: {
-        company_id: 2
-    }
-}
-
-const postdata = {
-    postNewAddress: {
-        company_id: 1,
-        address_field: '1 Flabba Dabba Road\\n Exmouth\\n Devon',
-        postcode: 'EX20 4BQ'
-    }
-}
-
-const putdata = {
-    putAddressById: {
-        address_id: 2, 
-        company_id: 2, 
-        address_field: 'First Floor Office\n8 Sandpiper Court\nHarrington Lane\nExeter',
-        postcode: 'EX5 8NS', 
-        live: true
-    }
-}
-
-
-getAllAddresses.testresult = (result) => {
+getAllAddresses.testresult = (result, data) => {
     expect(result).to.be.an('array');
     expect(result.length).to.equal(4);
-    expect(result[0].address_field).to.equal('Great Moor House\\nExeter\\nDevon');
-    expect(result[0].postcode).to.equal('EX2 7NN');
+    expect(result[data.index].address_field).to.equal(data.address_field);
+    expect(result[data.index].postcode).to.equal(data.postcode);
 }
 
-// getCompanyList.testresult = (result) => {
-//     expect(result).to.be.an('array');
-//     expect(result.length).to.equal(4);
-//     expect(result[0].company_name).to.equal('Devon County Council')
-//     expect(result[0].industry).to.equal(undefined)
-// }
-
-getAddressById.getdata = () => getdata.getAddressById
-
-getAddressById.testresult = (result) => {
-    const data = getdata.getAddressById
+getAddressById.testresult = (result, data) => {
     expect(result).to.be.an('object');
-    expect(result.company_id).to.equal(2)
-    expect(result.postcode).to.equal('EX4 8NS')
+    expect(result.company_id).to.equal(data.company_id)
+    expect(result.postcode).to.equal(data.postcode)
 }
 
-getLiveAddressesByCompanyId.getdata = () => getdata.getLiveAddressesByCompanyId;
-
-getLiveAddressesByCompanyId.testresult = (result) => {
-    const data = getdata.getLiveAddressesByCompanyId
+getLiveAddressesByCompanyId.testresult = (result, data) => {
     expect(result).to.be.an('array');
-    expect(result[0].company_id).to.equal(data.company_id)
-    expect(result[0].postcode).to.equal('EX4 8NS')
+    expect(result[data.index].company_id).to.equal(data.company_id)
+    expect(result[data.index].postcode).to.equal(data.postcode)
+    expect(result[data.index].live).to.equal(true)
 }
 
-postNewAddress.postdata = () => postdata.postNewAddress;
-
-postNewAddress.testresult = (result) => {
-    const data = postdata.postNewAddress;
+postNewAddress.testresult = (result, data) => {
     expect(result).to.be.an('object');
-    expect(result.address_id).to.equal(5);
+    expect(result.address_id).to.be.an('number');
      expect(result.company_id).to.equal(data.company_id);
     expect(result.address_field).to.equal(data.address_field);
+    expect(result.postcode).to.equal(data.postcode);
 }
 
-putAddressById.putdata = () => putdata.putAddressById
-
-putAddressById.testresult = (result) => {
-    const data = putdata.putAddressById
+putAddressById.testresult = (result, data) => {
     expect(result).to.be.an('object');
     expect(result.address_id).to.equal(data.address_id)
     expect(result.address_field).to.equal(data.address_field)

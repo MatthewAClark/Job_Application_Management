@@ -50,5 +50,14 @@ function fetchAddressById(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = { updateAddressById, fetchAddressById, fetchAllAddresses, addNewCompanyAddress, fetchLiveAddressesByCompanyId };
+const addAddress = (data) => new Promise(function (res, rej) {
+  if (data.address_id === null) {
+    postNewAddress(data.company_id, data.address_field, data.postcode, data.live)
+      .then(address => res({ ...data, ...address }))
+  } else {
+    return res(data)
+  }
+});
+
+module.exports = {addAddress, updateAddressById, fetchAddressById, fetchAllAddresses, addNewCompanyAddress, fetchLiveAddressesByCompanyId };
 

@@ -24,11 +24,11 @@ const {applications} = require('./components/applications.spec');
 
 const {controlleradverts} = require('./controllers/adverts.spec')
 
-describe.only('occupations test', () => occupations());
+describe('occupations test', () => occupations());
 describe('companies test', () => companies());
 describe('addresses test', () => addresses());
 describe('contacts test', () => contacts());
-describe('advert test', () => adverts());
+describe.only('advert test', () => adverts());
 describe('advert controller test', () => controlleradverts());
 describe('skills model test', () => skill());
 describe('applications test', () => applications());
