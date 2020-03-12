@@ -8,7 +8,7 @@ const app = require('../../server');
 
 // Import required model components
 const { getAllAdverts, getLiveAdverts, getAdvertById, getAllAdvertContacts, postNewAdvert, putAdvertById, postAdvertContact } = require('../testdata/adverts.data');
-const { addAdvertContacts } = require('../../controllers/db.adverts');
+const { addAdvertContacts, addRequirements } = require('../../controllers/db.adverts');
 
 // const {getAllApplications} = require ('../models/db.applications');
 
@@ -208,9 +208,9 @@ const adverts = () => {
     })
   })
 
-  describe.only('posts advert contacts', () => {
+  describe('posts advert contacts', () => {
 
-    it.only('../controllers/adverts adds contacts', () => {
+    it('../controllers/adverts adds contacts', () => {
 
       // return request(app)
       //get request to mock server
@@ -242,7 +242,7 @@ const adverts = () => {
       postcode: 'EX2 7NN',
       address_id: 1,
       position_title: 'Software Test Engineer',
-      contacts: [{ contact_id: 1, company_id: 1, address_id: 1, contact_name: 'Ray Rimes', contact_methods: [{method_id: 1, contact_method: 'Email', contact_value: 'test@testing.com'},{method_id: 2, contact_method: 'Telephone', contact_value: '0123456789'}] }],
+      contacts: [{ contact_id: 1, company_id: 1, address_id: 1, contact_name: 'Ray Rimes', contact_methods: [{ method_id: 1, contact_method: 'Email', contact_value: 'test@testing.com' }, { method_id: 2, contact_method: 'Telephone', contact_value: '0123456789' }] }],
       advert_ref: 'abc123',
       contract_type: 'permanent',
       contract_hours: 'full-time',
@@ -257,8 +257,10 @@ const adverts = () => {
       agency: false,
       job_board: '',
       voluntary: false,
-      job_location: 'Exeter'
+      job_location: 'Exeter',
+      skills: [{ skill_id: 1, skill_name: 'Customer Service' }, { skill_id: 2, skill_name: 'teamwork' }]
     }
+
     it('../controllers/adverts adds advert with same occupation, company returning original data', () => {
 
       return request(app)
@@ -315,7 +317,7 @@ const adverts = () => {
 
     })
 
-    it('../controllers/adverts adds advert with different occupation, new company data along with all other data', () => {
+    it('../controllers/adverts adds advert with different company, new company data along with all other data', () => {
       const testData = { ...data, company_id: null, company_name: 'Matts Software Ltd' }
       return request(app)
         //get request to mock server
@@ -470,8 +472,8 @@ const adverts = () => {
     })
 
     it('../controllers/adverts adds contact methods', () => {
-      const contacts = [...data.contacts, { contact_id: null, contact_name: 'Fred Flintstone', contact_methods: [{method_id: null, contact_method: 'Email', contact_value: 'fred@flintstones.bedrock.com'}] }]
-      contacts[0].contact_methods.push({method_id: null, contact_method: 'fax', contact_value: '987654321'})
+      const contacts = [...data.contacts, { contact_id: null, contact_name: 'Fred Flintstone', contact_methods: [{ method_id: null, contact_method: 'Email', contact_value: 'fred@flintstones.bedrock.com' }] }]
+      contacts[0].contact_methods.push({ method_id: null, contact_method: 'fax', contact_value: '987654321' })
       const testData = { ...data, contacts }
 
       return request(app)
@@ -493,6 +495,104 @@ const adverts = () => {
           expect(result.body.contacts[1].contact_methods[0].method_id).to.be.an('number')
           expect(result.body.contacts[1].contact_methods[0].contact_value).to.equal('fred@flintstones.bedrock.com')
         })
+
+    })
+
+    it('../controllers/adverts does not add skills if already present', () => {
+
+      // const testData = { ...data, contacts }
+
+      return request(app)
+        //get request to mock server
+        .post('/api/adverts/')
+        .send(data)
+        .expect(201)
+        .then(result => {
+          // console.log(result.body)
+          expect(result.body).to.be.an('object')
+          expect(result.body.skills).to.be.an('array')
+          expect(result.body.skills[0].skill_id).to.equal(1)
+          expect(result.body.skills[0].skill_name).to.equal('Customer Service')
+        })
+
+    })
+
+    it('../controllers/adverts adds a skill that is not in the database', () => {
+      const skills = [{ skill_id: null, skill_name: 'fencing' }]
+      const testData = { ...data, skills }
+
+      return request(app)
+        //get request to mock server
+        .post('/api/adverts/')
+        .send(testData)
+        .expect(201)
+        .then(result => {
+          expect(result.body).to.be.an('object')
+          expect(result.body.skills).to.be.an('array')
+          expect(result.body.skills[0].skill_id).to.be.an('number')
+          expect(result.body.skills[0].skill_name).to.equal('fencing')
+        })
+
+    })
+
+    it('../controllers/adverts adds contact methods', () => {
+      const skills = [{ skill_id: 1, skill_name: 'customer service', essential: true, duration: 3, experience_description: 'Great customer care is required' }]
+      const testData = { ...data, advert_id: 1, skills: skills }
+
+      addRequirements(testData)
+        .then(result => {
+          // console.log(result)
+        })
+
+      // return request(app)
+      //   //get request to mock server
+      //   .post('/api/adverts/')
+      //   .send(testData)
+      //   .expect(201)
+      //   .then(result => {
+      //     console.log(result.body)
+      //     expect(result.body).to.be.an('object')
+      //     expect(result.body.skills).to.be.an('array')
+      //     expect(result.body.skills[0].skill_id).to.equal(1)
+      //     expect(result.body.skills[0].experience_description).to.equal('Great customer care is required')
+      //   })
+
+    })
+
+
+    it('../controllers/adverts adds more than requirement for jobs', () => {
+      const skills = [{ skill_id: 1, skill_name: 'customer service', essential: true, duration: 3, experience_description: 'Great customer care is required' }, { skill_id: 2, skill_name: 'Teamwork', essential: true, duration: 3, experience_description: 'You need to work with people' }]
+      const testData = { ...data, advert_id: 2, skills }
+
+      addRequirements(testData)
+        .then(result => {
+          expect(result).to.be.an('object')
+          expect(result.skills).to.be.an('array')
+          expect(result.skills[0].skill_id).to.be.an('number')
+          expect(result.skills[1].skill_id).to.be.an('number')
+      })
+
+      
+
+    })
+
+    it.only('../controllers/adverts adds more than requirement for jobs', () => {
+      const skills = [{ skill_id: 1, skill_name: 'customer service', essential: true, duration: 3, experience_description: 'Great customer care is required' }, { skill_id: 2, skill_name: 'Teamwork', essential: true, duration: 3, experience_description: 'You need to work with people' }]
+      const testData = { ...data, advert_id: 2, skills }
+
+      return request(app)
+      //get request to mock server
+      .post('/api/adverts/')
+      .send(testData)
+      .expect(201)
+      .then(result => {
+        expect(result.body).to.be.an('object')
+        expect(result.body.skills).to.be.an('array')
+        expect(result.body.skills[0].skill_id).to.be.an('number')
+        expect(result.body.skills[0].skill_name).to.equal('customer service')
+      })
+
+      
 
     })
   })

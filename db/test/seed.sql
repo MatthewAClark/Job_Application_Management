@@ -128,6 +128,7 @@ CREATE TABLE skills
 
 CREATE TABLE requirements
 (
+    requirement_id SERIAL PRIMARY KEY,
     skill_id INT,
     advert_id INT,
     essential BOOLEAN,

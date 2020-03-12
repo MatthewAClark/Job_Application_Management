@@ -30,7 +30,7 @@ describe('addresses test', () => addresses());
 describe('contacts test', () => contacts());
 describe.only('advert test', () => adverts());
 describe('advert controller test', () => controlleradverts());
-describe('skills model test', () => skill());
+describe('skills test', () => skill());
 describe('applications test', () => applications());
 
 

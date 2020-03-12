@@ -15,6 +15,7 @@ const getLiveAdverts = () => db.manyOrNone('SELECT adverts.*, companies.company_
 
 const getAllAdvertContacts = (advert_id) => db.manyOrNone('SELECT * FROM contacts RIGHT JOIN advert_contacts ON advert_contacts.contact_id=contacts.contact_id WHERE advert_contacts.advert_id=$1', [advert_id])
 
+const getAdvertContactsByAdvertId = (advert_id) => db.manyOrNone('SELECT * FROM contacts LEFT JOIN advert_contacts ON advert_contacts.contact_id=contacts.contact_id WHERE advert_contacts.advert_id=$1', [advert_id])
 // const getAllAdverts = () => db.manyOrNone('SELECT * FROM adverts FULL JOIN companies ON adverts.company_id=companies.company_id');
 
 // const getAllAdverts = () => db.manyOrNone('SELECT * FROM adverts FULL JOIN applications ON adverts.advert_id=applications.advert_id FULL JOIN correspondence ON adverts.correspondence_id=correspondence.correspondence_id FULL JOIN companies ON correspondence.company_id=companies.company_id');
@@ -22,6 +23,10 @@ const getAllAdvertContacts = (advert_id) => db.manyOrNone('SELECT * FROM contact
 const getAdvertById = (advert_id) => db.oneOrNone('SELECT * FROM adverts LEFT JOIN companies ON adverts.company_id=companies.company_id LEFT JOIN occupations ON adverts.occupation_id=occupations.occupation_id LEFT JOIN addresses ON adverts.address_id=addresses.address_id WHERE adverts.advert_id=$1', [advert_id]);
 
 // const getLiveAdverts = () => db.manyOrNone('SELECT * FROM adverts FULL JOIN companies ON adverts.company_id=companies.company_id WHERE adverts.live=true');
+
+const getAllRequirements = () => db.oneOrNone('SELECT * FROM requirements LEFT JOIN skills ON requirements.skill_id=skills.skill_id');
+
+const getRequirementsByAdvertId = (advert_id) => db.oneOrNone('SELECT * FROM requirements LEFT JOIN skills ON requirements.skill_id=skills.skill_id WHERE requirements.advert_id=$1', [advert_id]);
 
 
 const putAdvertById = (advert_id, occupation_id, company_id, address_id, position_title, advert_ref, contract_type, contract_hours, date_posted, date_seen, closing_date, live, advert_url, min_salary, max_salary, advert_description, agency, job_board, voluntary, job_location) => {
@@ -32,4 +37,8 @@ const postAdvertContact = (advert_id, contact_id) => {
     return db.one('INSERT INTO advert_contacts (contact_id, advert_id) VALUES ($1, $2) RETURNING *', [contact_id, advert_id])
 }
 
-module.exports = {postAdvertContact, getAllAdvertContacts, seedNewAdvert, postNewAdvert, getAllAdverts, getLiveAdverts, getAdvertById, putAdvertById};
+const postAllRequirements = (skill_id, advert_id, essential, duration, experience_description) => {
+    return db.one('INSERT INTO requirements (advert_id, skill_id, essential, duration, experience_description) VALUES ($1, $2, $3, $4, $5) RETURNING *', [advert_id, skill_id, essential, duration, experience_description])
+}
+
+module.exports = { postAllRequirements, getRequirementsByAdvertId, getAllRequirements, getAdvertContactsByAdvertId, postAdvertContact, getAllAdvertContacts, seedNewAdvert, postNewAdvert, getAllAdverts, getLiveAdverts, getAdvertById, putAdvertById};

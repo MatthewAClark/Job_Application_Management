@@ -3,9 +3,15 @@ const express  = require('express');
 
 const router = express.Router();
 
-const {fetchAllAdvertsRaw, addNewAdvert,  fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById} = require('../controllers/db.adverts');
+const { fetchRequirementsByAdvertId, fetchAllRequirements, fetchAllAdvertsRaw, addNewAdvert,  fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById, fetchAdvertContactsByAdvertId} = require('../controllers/db.adverts');
+
+ router.get('/requirements', fetchAllRequirements);
+
+ router.get('/requirements/:advert_id', fetchRequirementsByAdvertId);
 
  router.get('/', fetchAllAdverts);
+
+ router.get('/contacts/:advert_id', fetchAdvertContactsByAdvertId);
 
  router.get('/live', fetchLiveAdverts);
 

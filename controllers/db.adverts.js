@@ -1,7 +1,8 @@
 
-const { postNewAdvert, getAllAdvertsRaw, getAllAdverts, getLiveAdverts, getAdvertById, putAdvertById, postAdvertContact } = require('../models/db.adverts');
+const { postAllRequirements, getRequirementsByAdvertId, postNewAdvert, getAllAdvertsRaw, getAllAdverts, getLiveAdverts, getAdvertById, putAdvertById, postAdvertContact, getAdvertContactsByAdvertId, getAllRequirements } = require('../models/db.adverts');
 const { postNewPosition, putPositionById } = require('../models/db.positions');
 const { postNewPosition_contact, putPosition_contactById } = require('../models/db.position_contacts');
+const { addSkills } = require('../controllers/db.skills')
 
 const { addOccupation } = require('../controllers/db.occupations');
 const { addCompany } = require('../controllers/db.companies');
@@ -12,17 +13,17 @@ const addAdvertContacts = (data) => new Promise(function (res, rej) {
 
   Promise.all(data.contacts.map((contact, i) => {
     return postAdvertContact(data.advert_id, contact.contact_id)
-    .then(advert_contact => {
-      var contacts = data.contacts
-      contacts[i] = {...contact, ...advert_contact}
-      data = {...data, contacts: contacts}
-    })
+      .then(advert_contact => {
+        var contacts = data.contacts
+        contacts[i] = { ...contact, ...advert_contact }
+        data = { ...data, contacts: contacts }
+      })
   }))
-  .then(() => {
-   
-    res(data)
-  })
-  
+    .then(() => {
+
+      res(data)
+    })
+
 });
 
 const addAdvert = (data) => new Promise(function (res, rej) {
@@ -30,6 +31,24 @@ const addAdvert = (data) => new Promise(function (res, rej) {
     .then(advert => res({ ...data, ...advert }))
 
 });
+
+const addRequirements = (data) => new Promise(function (res, rej) {
+  Promise.all(data.skills.map((skill, i) => {
+    if (skill.skill_id !== null) {
+    return postAllRequirements(skill.skill_id, data.advert_id, skill.essential, skill.duration, skill.experience_description)
+    .then(skill => {
+      var skills = data.skills
+      skills[i] = {...skills[i], ...skill}
+      data = {...data, skills: skills}
+    })
+    }
+  }))
+    .then(() => {
+      res(data)
+    })
+  
+})
+
 
 
 
@@ -44,26 +63,27 @@ function addNewAdvert(req, res, next) {
 
   // occupation, company, address, contact, correspondence, position, advert and contact values
   addOccupation(req.body)
-  .then(data => addCompany(data))
-  .then(data => addAddress(data))
-  .then(data => addContacts(data))
-  .then(data => addAdvert(data))
-  .then(data => addAdvertContacts(data))
-  .then(data => new Promise(function (res, rej) {
-    Promise.all(data.contacts.map((contact, i) => {
-      return addContactMethods(contact)
-      .then(contact => {
-        data.contacts[i] = contact
-      })
-    })).then(() => {
-      res(data)
-    })
+    .then(data => addCompany(data))
+    .then(data => addAddress(data))
+    .then(data => addContacts(data))
+    .then(data => addAdvert(data))
+    .then(data => addAdvertContacts(data))
+    .then(data => new Promise(function (res, rej) {
+      Promise.all(data.contacts.map((contact, i) => {
+        return addContactMethods(contact)
+          .then(contact => {
+            data.contacts[i] = contact
+          })
+      }))
+        .then(() => {
+          res(data)
+        })
+    }))
+    .then(data => addSkills(data))
+    .then(data => addRequirements(data))
 
-    
-  }))
-  
-  // .then(data => addCompany(data))
-  .then(data => res.status(201).send(data))
+    // .then(data => addCompany(data))
+    .then(data => res.status(201).send(data))
     .catch((error) => {
       console.log(error)
       return next({ status: 400, error: error })
@@ -188,6 +208,18 @@ function fetchAllAdverts(req, res, next) {
     .catch((error) => next({ status: 404, error: error }));
 }
 
+function fetchAllRequirements(req, res, next) {
+  getAllRequirements()
+    .then(data => res.status(200).send(data))
+    .catch((error) => next({ status: 404, error: error }));
+}
+
+function fetchAdvertContactsByAdvertId(req, res, next) {
+  getAdvertContactsByAdvertId(req.params.advert_id)
+    .then(data => res.status(200).send(data))
+    .catch((error) => next({ status: 404, error: error }));
+}
+
 function fetchAllAdvertsRaw(req, res, next) {
   getAllAdvertsRaw()
     .then(data => res.status(200).send(data))
@@ -196,6 +228,12 @@ function fetchAllAdvertsRaw(req, res, next) {
 
 function fetchLiveAdverts(req, res, next) {
   getLiveAdverts()
+    .then(data => res.status(200).send(data))
+    .catch((error) => next({ status: 404, error: error }));
+}
+
+function fetchRequirementsByAdvertId(req, res, next) {
+  getRequirementsByAdvertId(req.params.advert_id)
     .then(data => res.status(200).send(data))
     .catch((error) => next({ status: 404, error: error }));
 }
@@ -209,5 +247,5 @@ function fetchAdvertById(req, res, next) {
     .catch((error) => next({ status: 404, error: error }))
 }
 
-module.exports = { addAdvertContacts, fetchAllAdvertsRaw, updateAdvert, updatePosition, addNewAdvert, addAdvert, fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById };
+module.exports = { addRequirements, fetchRequirementsByAdvertId, fetchAllRequirements, fetchAdvertContactsByAdvertId, addAdvertContacts, fetchAllAdvertsRaw, updateAdvert, updatePosition, addNewAdvert, addAdvert, fetchAllAdverts, fetchLiveAdverts, fetchAdvertById, updateAdvertById };
 
